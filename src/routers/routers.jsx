@@ -5,6 +5,8 @@ import Profile from "../pages/Profile/Profile";
 import Signup from "../pages/Authentication/Signup";
 import Signin from "../pages/Authentication/Signin";
 import Product from "../pages/Product";
+import ProductDetail from "../pages/ProductDetail";
+import Cart from "../pages/Cart";
 
 const routers = createBrowserRouter([
   {
@@ -25,8 +27,12 @@ const routers = createBrowserRouter([
   },
   {
     path: "/detail/:product",
-    element: <Product />,
+    element: <ProductDetail />,
   },
+  {
+    path: "/cart",
+    element: <Cart/>
+  }
 ]);
 
 export default routers;

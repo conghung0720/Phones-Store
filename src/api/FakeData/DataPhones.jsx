@@ -4,6 +4,7 @@ export const FAKE_DATA_PHONES = [
       name: "iPhone 12",
       brand: "Apple",
       price: 999,
+      quantity_sold: 2,
       description:
         "Chiếc iPhone mới nhất từ Apple với chip A14 Bionic mạnh mẽ và màn hình Super Retina XDR.",
       colors: ["Đen", "Trắng", "Đỏ", "Xanh", "Xanh lá"],

@@ -2,9 +2,12 @@ import React from "react";
 import Header from "../../components/Header/Header";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import CartItems from "./CartItems";
+import { store } from "../../store";
+import { incremented } from "../../store/redux";
 
 
 const Cart = () => {
+
   return (
     <>
       <Header />

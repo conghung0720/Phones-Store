@@ -1,14 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
 import Header from '../../components/Header/Header'
+import ThumbsGallery from '../../components/Slides/ThumbsGallery/ThumbsGallery'
+import { useGetProductByIdQuery } from '../../api/api'
+import { useParams } from 'react-router-dom'
+import { formattedPrice } from '../../utils/formatedPrice'
 const product = {
   name: 'Basic Tee 6-Pack',
   price: '$192',
   href: '#',
   breadcrumbs: [
-    { id: 1, name: 'Men', href: '#' },
-    { id: 2, name: 'Clothing', href: '#' },
+    { id: 1, name: 'Iphone', href: '#' },
   ],
   images: [
     {
@@ -61,12 +64,16 @@ function classNames(...classes) {
 }
 
 export default function ProductDetail() {
+  const {idProduct} = useParams()
+  const {data: isData, isLoading, isSuccess} = useGetProductByIdQuery({idProduct});
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
+  const [imagesAttr, setImagesAttr] = useState([]);
+
 
   return (<>
-    <Header/>
-    <div className="bg-white">
+  <Header/>
+   {isSuccess && <div className="bg-white">
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -82,7 +89,7 @@ export default function ProductDetail() {
             ))}
             <li className="text-sm">
               <a href={product.href} aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
-                {product.name}
+                {isData.name}
               </a>
             </li>
           </ol>
@@ -92,20 +99,20 @@ export default function ProductDetail() {
      
 
         {/* Product info */}
-        <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+        <div className="mx-auto max-w-2xl  px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-            <img className='w-[10em]' src={product.images[0].src}/>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{product.name}</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{isData.name}</h1>
           </div>
 
           {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
+              <ThumbsGallery images={isData.attributes.map(value => value.image)}/>
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
+            <p className="text-3xl tracking-tight text-gray-900">{formattedPrice(isData.attributes[0].price)}</p>
 
             {/* Reviews */}
             <div className="mt-6">
-              <h3 className="sr-only">Reviews</h3>
+              <h3 className="sr-only">Đánh giá</h3>
               <div className="flex items-center">
                 <div className="flex items-center">
                   {[0, 1, 2, 3, 4].map((rating) => (
@@ -128,8 +135,7 @@ export default function ProductDetail() {
 
             <form className="mt-10">
               {/* Colors */}
-            
-
+          
               {/* Sizes */}
               <div className="mt-10">
                 <div className="flex items-center justify-between">
@@ -138,27 +144,26 @@ export default function ProductDetail() {
                 </div>
 
                 <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
-                  <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
                   <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                    {product.colors.map((size) => (
+                    {isData.attributes.map((value) => (
                       <RadioGroup.Option
-                      key={size.name}
-                      value={size}
-                      disabled={!size.inStock}
+                      key={value.name}
+                      value={value.id}
+                      disabled={value.quantity <= 0}
                       className={({ active }) =>
                       classNames(
-                        size.inStock
-                        ? `cursor-pointer ${size.class} text-gray-900 shadow-sm`
+                        value.quantity
+                        ? `cursor-pointer ${value.class} text-gray-900 shadow-sm `
                         : 'cursor-not-allowed bg-gray-50 text-gray-200',
                         active ? 'ring-2 ring-indigo-500' : '',
-                        'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6'
+                        'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:shadow-2xl focus:outline-none sm:flex-1 sm:py-6'
                         )
                       }
                       >
                         {({ active, checked }) => (
                           <>
                             <RadioGroup.Label className={"h-6"} as="span">{}</RadioGroup.Label>
-                            {size.inStock ? (
+                            {value.quantity ? (
                               <span
                               className={classNames(
                                 active ? 'border' : 'border-2',
@@ -205,16 +210,16 @@ export default function ProductDetail() {
               <h3 className="sr-only">Description</h3>
 
               <div className="space-y-6">
-                <p className="text-base text-gray-900">{product.description}</p>
+                <p className="text-base text-gray-900">{isData.description}</p>
               </div>
             </div>
 
             <div className="mt-10">
-              <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
+              <h3 className="text-sm font-medium text-gray-900">Đặc điểm nổi bật</h3>
 
               <div className="mt-4">
                 <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                  {product.highlights.map((highlight) => (
+                  {isData.highlights.map((highlight) => (
                     <li key={highlight} className="text-gray-400">
                       <span className="text-gray-600">{highlight}</span>
                     </li>
@@ -224,16 +229,16 @@ export default function ProductDetail() {
             </div>
 
             <div className="mt-10">
-              <h2 className="text-sm font-medium text-gray-900">Details</h2>
+              <h2 className="text-sm font-medium text-gray-900">Chi tiết</h2>
 
               <div className="mt-4 space-y-6">
-                <p className="text-sm text-gray-600">{product.details}</p>
+                <p className="text-sm text-gray-600">{isData.detail}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-                </>
+    </div>}
+   </>
   )
 }

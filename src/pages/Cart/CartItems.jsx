@@ -68,7 +68,7 @@ const product = {
     ],
     details:
       'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-  };
+};
   
 
 const CartItems = () => {
@@ -94,26 +94,7 @@ const CartItems = () => {
         </div>
       </div>
     </li>
-    <li className=" h-[20em] py-7 flex border-y-[1.5px]">
-      <img className="h-full w-[40%] object-cover" src={product.images[0].src}/>
-      <div className="w-full flex px-3">
-        <div className="w-[50%] h-full space-y-1.5 relative">
-        <h2 className="text-slate-700 font-semibold">Iphone 15</h2>
-        <h4 className="text-slate-̉500">Màu: Đỏ</h4>
-        <h1 className="font-semibold">350.500 VND</h1>
-        <span className="flex absolute bottom-0 left-0">
-        <CheckIcon className="h-5 w-5 text-green-600"/>
-        Còn hàng
-        </span>
-        </div>
-        <div className="w-[50%] h-[15%] flex justify-between items-center">
-          <select className="focus:outline-blue-500 active:outline-blue-500 py-1 border-[1.5px] rounded-[5px] px-4">
-            <option>3</option>
-          </select>
-          <XMarkIcon className="h-5 w-5 text-slate-500 cursor-pointer hover:text-slate-800"/>
-        </div>
-      </div>
-    </li>
+   
   </ul>
   )
 }

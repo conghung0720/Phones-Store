@@ -1,24 +1,42 @@
 import React, { useState } from "react";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
+import { useRegisterMutation } from "../../api/api";
+import { ToastContainer, toast } from "react-toastify";
 
 //(TypeAuth = true) tương đương form đăng ký
 const AuthForm = ({ typeAuth = true }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [userName, setUserName] = useState("")
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [register, { isloading }] = useRegisterMutation();
   let titleButton = typeAuth ? "Đăng ký" : "Đăng nhập";
+
 
   async function onSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsLoading(false);
+      await register({
+        userName,
+        password,
+        email,
+        active: true
+      }).then(value => {
+       console.log(value);
+       localStorage.setItem("token", value.data.metadata.tokens.accessToken)
+      })
     }, 3000);
+    
   }
-
+  
   // const titleButton =
   return (
     <>
+    <ToastContainer />
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-1 space-y-3">
@@ -26,11 +44,16 @@ const AuthForm = ({ typeAuth = true }) => {
               placeHolder="Điền tài khoản"
               type="text"
               disabled={isLoading}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              required
             />
             <Input
               disabled={isLoading}
               placeHolder="Điền mật khẩu"
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             {typeAuth && (
@@ -38,6 +61,8 @@ const AuthForm = ({ typeAuth = true }) => {
                 placeHolder="name@example.com"
                 type="email"
                 autocomplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
               />
             )}

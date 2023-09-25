@@ -1,4 +1,5 @@
 import React from "react";
+import ThumbsGallery from "../../components/Slides/ThumbsGallery/ThumbsGallery";
 
 const product = {
   name: 'Basic Tee 6-Pack',
@@ -58,7 +59,7 @@ const reviews = { href: '#', average: 4, totalCount: 117 }
 const Product = () => {
   return <main className="h-screen flex border-2 border-red-600 px-[3%]">
     <div className="border-2 w-[50%] border-red-600 ">
-      <img src={product.images[0].src} className="h-[35em] w-[95%] object-cover"/>
+      <ThumbsGallery/>
     </div>
     <div className="w-[50%] border-blue-600 border-2">
       <ul>

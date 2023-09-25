@@ -7,6 +7,7 @@ import Signin from "../pages/Authentication/Signin";
 import Product from "../pages/Product";
 import ProductDetail from "../pages/ProductDetail";
 import Cart from "../pages/Cart";
+import OrderHistory from "../pages/OrderHistory";
 
 const routers = createBrowserRouter([
   {
@@ -26,12 +27,16 @@ const routers = createBrowserRouter([
     element: <Signin />,
   },
   {
-    path: "/detail/:product",
+    path: "/detail/:idProduct",
     element: <ProductDetail />,
   },
   {
     path: "/cart",
     element: <Cart/>
+  },
+  {
+    path: "/orderHistory",
+    element: <OrderHistory/>
   }
 ]);
 

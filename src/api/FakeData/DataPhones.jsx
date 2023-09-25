@@ -37,7 +37,7 @@ export const FAKE_DATA_PHONES = [
     },
     {
       _id: "4",
-      name: "Xiaomi Redmi Note 10",
+      name: "Xia omi Redmi Note 10",
       brand: "Xiaomi",
       price: 299,
       description:

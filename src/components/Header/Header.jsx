@@ -1,11 +1,15 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { store } from '../../store'
+import { isExpired, decodeToken } from "react-jwt";
+import { logout, setUser } from '../../store/redux/userSlice'
+
 
 const navigation = [
-  { name: 'Trang chủ', href: '/', current: true },
-  { name: 'Danh sách sản phẩm', href: '#', current: false },
+  { name: 'Trang chủ', href: '/', current: false },
+  { name: 'Danh sách sản phẩm', href: '/productlist', current: false },
   { name: 'Thông tin', href: '#', current: false },
   { name: 'Giới thiệu', href: '#', current: false },
 ]
@@ -15,6 +19,17 @@ function classNames(...classes) {
 }
 
 export default function Header() {
+  const {userInfo} = store.getState().reducer;
+  const navigate = useNavigate()
+  
+
+
+  const handleLogout = () => {
+    store.dispatch(logout())
+    navigate('/signin')
+  }
+
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -44,9 +59,9 @@ export default function Header() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium'
@@ -54,7 +69,7 @@ export default function Header() {
                         aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -71,7 +86,7 @@ export default function Header() {
                   </Link>
 
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
+                {userInfo ? <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
@@ -105,27 +120,32 @@ export default function Header() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <Link
+                            to="/orderhistory"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
-                            Liên hệ
-                          </a>
+                            Lịch sử đặt hàng
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
+                          <span
+                            onClick={handleLogout}
                             href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 cursor-pointer text-sm text-gray-700')}
                           >
                             Đăng xuất
-                          </a>
+                          </span>
                         )}
                       </Menu.Item>
                     </Menu.Items>
                   </Transition>
-                </Menu>
+                </Menu> : <Link to="/signin">
+                  <span className='px-5 text-gray-100'>
+                    Đăng nhập
+                  </span>
+                  </Link>}
               </div>
             </div>
           </div>

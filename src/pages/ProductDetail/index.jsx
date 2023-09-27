@@ -3,9 +3,12 @@ import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
 import Header from '../../components/Header/Header'
 import ThumbsGallery from '../../components/Slides/ThumbsGallery/ThumbsGallery'
-import { useGetProductByIdQuery } from '../../api/api'
-import { useParams } from 'react-router-dom'
+import { useAddToCartMutation, useGetProductByIdQuery } from '../../api/api'
+import { useNavigate, useParams } from 'react-router-dom'
 import { formattedPrice } from '../../utils/formatedPrice'
+import Footer from '../../components/Footer/Footer'
+import { store } from '../../store'
+import { ToastContainer, toast } from 'react-toastify'
 const product = {
   name: 'Basic Tee 6-Pack',
   price: '$192',
@@ -66,11 +69,52 @@ function classNames(...classes) {
 export default function ProductDetail() {
   const {idProduct} = useParams()
   const {data: isData, isLoading, isSuccess} = useGetProductByIdQuery({idProduct});
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2])
-  const [imagesAttr, setImagesAttr] = useState([]);
+  const [addToCart, {loadCart}] = useAddToCartMutation();
+  const { userInfo } = store.getState().reducer
+  const navigate = useNavigate()
 
+  const [getColor, setColor] = useState("");
+  const [indexAttr, setIndexAttr] = useState(0);
+  const [price, setPrice] = useState("");
+  const [selectedSize, setSelectedSize] = useState(product.sizes[0])
 
+  const handleAddToCart = async (e) => {
+    e.preventDefault()
+    if(!userInfo?.account) navigate('/signin')
+
+    const { _id: userId} = userInfo.account
+    const {name, description, main_image} = isData
+    const { color, id, price, image } = isData.attributes[indexAttr]
+
+    await addToCart({
+      productId: idProduct,
+      userId,
+      name,
+      description,
+      color,
+      id,
+      class: isData.attributes[indexAttr].class,
+      quantity: +1,
+      devide_storage: "128GB",
+      price,
+      image
+    })
+
+    toast.success("Thêm thành công!", {
+      position: "top-right",
+      autoClose: 3000,
+  
+    });
+  }
+
+  const handleChangeColor = (e) => {
+    const indexColor = +e.currentTarget.getAttribute('indexcolor')
+    setPrice(isData.attributes[indexColor].price)
+    setIndexAttr(indexColor)
+  }
+  
+  isData && !price && setPrice(isData.attributes[0].price)
+  
   return (<>
   <Header/>
    {isSuccess && <div className="bg-white">
@@ -108,7 +152,7 @@ export default function ProductDetail() {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
               <ThumbsGallery images={isData.attributes.map(value => value.image)}/>
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-gray-900">{formattedPrice(isData.attributes[0].price)}</p>
+            <p className="text-3xl tracking-tight text-gray-900">{formattedPrice(price)}</p>
 
             {/* Reviews */}
             <div className="mt-6">
@@ -145,10 +189,12 @@ export default function ProductDetail() {
 
                 <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
                   <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                    {isData.attributes.map((value) => (
+                    {isData.attributes.map((value, index) => (
                       <RadioGroup.Option
-                      key={value.name}
-                      value={value.id}
+                      key={index}
+                      value={index}
+                      indexColor={index}
+                      onClick={handleChangeColor}
                       disabled={value.quantity <= 0}
                       className={({ active }) =>
                       classNames(
@@ -165,6 +211,7 @@ export default function ProductDetail() {
                             <RadioGroup.Label className={"h-6"} as="span">{}</RadioGroup.Label>
                             {value.quantity ? (
                               <span
+                              
                               className={classNames(
                                 active ? 'border' : 'border-2',
                                 checked ? 'border-indigo-500' : 'border-transparent',
@@ -196,6 +243,7 @@ export default function ProductDetail() {
               </div>
 
               <button
+                onClick={handleAddToCart}
                 type="submit"
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
@@ -239,6 +287,8 @@ export default function ProductDetail() {
         </div>
       </div>
     </div>}
+    <Footer/>
+    <ToastContainer/>
    </>
   )
 }

@@ -4,10 +4,11 @@ import Home from "../pages/Home/Home";
 import Profile from "../pages/Profile/Profile";
 import Signup from "../pages/Authentication/Signup";
 import Signin from "../pages/Authentication/Signin";
-import Product from "../pages/Product";
 import ProductDetail from "../pages/ProductDetail";
-import Cart from "../pages/Cart";
 import OrderHistory from "../pages/OrderHistory";
+import ProductList from "../pages/ProductList";
+import Checkout from "../pages/Checkout";
+import Cart from "../pages/Cart/Cart";
 
 const routers = createBrowserRouter([
   {
@@ -31,12 +32,20 @@ const routers = createBrowserRouter([
     element: <ProductDetail />,
   },
   {
+    path: "/productlist",
+    element: <ProductList/>
+  },
+  {
     path: "/cart",
     element: <Cart/>
   },
   {
     path: "/orderHistory",
     element: <OrderHistory/>
+  },
+  {
+    path: "/checkout",
+    element: <Checkout/>
   }
 ]);
 

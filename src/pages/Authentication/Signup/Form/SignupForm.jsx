@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import Button from "../Button/Button";
-import Input from "../Input/Input";
-import { useRegisterMutation } from "../../api/api";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useRegisterMutation } from "../../../../api/api";
+import Button from "../../../../components/Button/Button"
+import Input from "../../../../components/Input/Input"
+import { redirect, useNavigate } from "react-router-dom";
+import { store } from "../../../../store";
+import { setUser } from "../../../../store/redux/userSlice";
 
-//(TypeAuth = true) tương đương form đăng ký
-const AuthForm = ({ typeAuth = true }) => {
+const SignupForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [register, { isloading }] = useRegisterMutation();
-  let titleButton = typeAuth ? "Đăng ký" : "Đăng nhập";
-
+  let navigate = useNavigate()
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -26,12 +27,17 @@ const AuthForm = ({ typeAuth = true }) => {
         email,
         active: true
       }).then(value => {
-       console.log(value);
-       localStorage.setItem("token", value.data.metadata.tokens.accessToken)
+       if(value.data){
+         localStorage.setItem("access_token", value.data.metadata.tokens.accessToken)
+         navigate('/signin')
+        }
+        else{
+        }
       })
     }, 3000);
     
   }
+
   
   // const titleButton =
   return (
@@ -56,7 +62,6 @@ const AuthForm = ({ typeAuth = true }) => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {typeAuth && (
               <Input
                 placeHolder="name@example.com"
                 type="email"
@@ -65,12 +70,11 @@ const AuthForm = ({ typeAuth = true }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
               />
-            )}
           </div>
           <Button
             disabled={isLoading}
             loading={isLoading}
-            title={titleButton}
+            title="Đăng ký"
             colorButton="bg-black"
             textColor="text-white"
             type="submit"
@@ -118,4 +122,4 @@ const AuthForm = ({ typeAuth = true }) => {
   );
 };
 
-export default AuthForm;
+export default SignupForm;

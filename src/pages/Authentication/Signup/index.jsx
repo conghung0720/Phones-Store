@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import AuthForm from "../../../components/Form/AuthForm";
+import SignupForm from "./Form/SignupForm";
 
 export default function Signup() {
   return (
@@ -28,7 +28,7 @@ export default function Signup() {
               </div>
             </div>
             <div className="grid gap-6 mt-[9px]">
-              <AuthForm />
+              <SignupForm />
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from "react";
-import AuthForm from "../../../components/Form/AuthForm";
 import { Link } from "react-router-dom";
+import SigninForm from "./Form/SigninForm";
 
 const Signin = () => {
   return (
@@ -23,7 +23,7 @@ const Signin = () => {
                 </span>
               </p>
             </div>
-            <AuthForm typeAuth={false}/>
+            <SigninForm />
           </div>
         </div>
         <div className="w-[50%] ">

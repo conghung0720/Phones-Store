@@ -4,69 +4,7 @@ import { formattedPrice } from "../../../utils/formatedPrice"
 import SuggestSearch from "../../../components/Search/SuggestSearch"
 import { useEffect, useState } from "react"
 
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
-const products = [
-    {
-      id: 1,
-      name: 'Basic Tee',
-      href: '#',
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-      imageAlt: "Front of men's Basic Tee in black.",
-      price: '$35',
-      color: 'Black',
-    },
-    {
-        id: 1,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      {
-        id: 1,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      {
-        id: 1,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      {
-        id: 1,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-    // More products...
-  ]
-  
+
   export default function ItemList() {
     const {data: isData, isSuccess, isLoading} = useGetListPhonesQuery()
     const [keyword, setKeyword] = useState("");

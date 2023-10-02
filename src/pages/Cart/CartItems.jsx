@@ -22,7 +22,7 @@ const CartItems = ({name, color, price, image, quantity, loadingCartItem, produc
   }
 
   const handleSubtract = async () => {
-    const {_id: userId} = userInfo.account;
+    const {_id: userId} = userInfo;
     const foundSubProduct = await findSubProduct({
       productId,
       attrId,
@@ -41,7 +41,7 @@ const CartItems = ({name, color, price, image, quantity, loadingCartItem, produc
   }
   
   const handlePlus = async (e) => {
-    const {_id: userId} = userInfo.account;
+    const {_id: userId} = userInfo;
     const foundSubProduct = await findSubProduct({
       productId,
       attrId,

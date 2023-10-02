@@ -27,11 +27,15 @@ const SignupForm = () => {
         email,
         active: true
       }).then(value => {
-       if(value.data){
+        if(value.data){
          localStorage.setItem("access_token", value.data.metadata.tokens.accessToken)
+         localStorage.setItem("refresh_token", value.data.metadata.tokens.refreshToken)
+
          navigate('/signin')
         }
-        else{
+        
+        if(value.error && value.error.status === 400){
+          throw new Error(value.error.data.message)
         }
       })
     }, 3000);

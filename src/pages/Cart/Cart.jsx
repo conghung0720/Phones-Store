@@ -17,7 +17,9 @@ const Cart = () => {
 
 
   const {userInfo} = store.getState().reducer;
-  const {data: isData, isSuccess, isLoading} = useGetCartQuery({userId: userInfo.account?._id})
+  
+  const {data: isData, isSuccess, isLoading} = useGetCartQuery({userId: userInfo?._id})
+
 
 
   useEffect(() => {

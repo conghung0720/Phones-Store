@@ -1,4 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { store } from '../store'
+import { baseQueryWithReauth } from './axios'
+
+
+// const {userInfo} = store.getState().reducer;
+
+const HEADERS = {
+  // "CLIENT_ID": userInfo?._id,
+  "x-rtoken-id": localStorage.getItem('refresh_token'),
+  "authorization": localStorage.getItem("access_token")
+}
 
 export const productsApi = createApi({
     reducerPath: 'productsApi',
@@ -31,7 +42,6 @@ export const authApi = createApi({
                 url: "auth/signup",
                 method: "POST",
                 body: data,
-                headers: {"CLIENT_ID": "Test"}
             })
         }),
         login: builder.mutation({
@@ -39,24 +49,26 @@ export const authApi = createApi({
               url: "auth/signin",
               method: "POST",
               body: data,
-              headers: {"CLIENT_ID": "Test"}
-          })
+            })
+      }),
+        logout: builder.mutation({
+          query: () => ({
+              url: "auth/logout",
+              method: "POST",
+            })
       })
     })
 })
 
 export const cartApi = createApi({
     reducerPath: 'cartApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_HOST
-    }),
+    baseQuery: baseQueryWithReauth,
     endpoints: (builder) => ({
         addToCart: builder.mutation({
             query: (data) => ({
                 url: "cart",
                 method: "POST",
                 body: data,
-                headers: {"CLIENT_ID": "Test"}
             })
         }),
         updateItem: builder.mutation({
@@ -64,7 +76,7 @@ export const cartApi = createApi({
               url: "cart/update",
               method: "POST",
               body: data,
-              headers: {"CLIENT_ID": "Test"}
+              headers: HEADERS
           })
       }),
         getCart: builder.query({
@@ -113,6 +125,6 @@ export const orderHistoryApi = createApi({
 export const { useOrderHistoryMutation, useGetOrderHistoryUserQuery } = orderHistoryApi
 export const { useCheckoutMutation } = checkoutApi
 export const { useAddToCartMutation, useGetCartQuery, useUpdateItemMutation} = cartApi
-export const { useRegisterMutation, useLoginMutation} = authApi
+export const { useRegisterMutation, useLoginMutation, useLogoutMutation} = authApi
 export const { useGetListPhonesQuery, useGetProductByIdQuery, useGetProductSubByIdMutation } = productsApi
 

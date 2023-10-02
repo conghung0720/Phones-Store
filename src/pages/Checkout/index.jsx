@@ -8,7 +8,7 @@ import Button from '../../components/Button/Button';
 
 const Checkout = () => {
   const {userInfo} = store.getState().reducer;
-  const {data: isData, isSuccess, isLoad} = useGetCartQuery({userId: userInfo.account?._id})
+  const {data: isData, isSuccess, isLoad} = useGetCartQuery({userId: userInfo?._id})
   const [checkout, result] = useCheckoutMutation()
 
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +25,7 @@ const Checkout = () => {
           email,
           address,
           full_name: fullName,
-          userId: userInfo.account?._id,
+          userId: userInfo?._id,
           cartId: isData._id,
           phone_number: "033344566",
           total_price: +isData.total_price_cart

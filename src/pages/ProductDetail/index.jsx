@@ -22,8 +22,8 @@ function classNames(...classes) {
 }
 
 export default function ProductDetail() {
-  const {idProduct} = useParams()
-  const {data: isData, isLoading, isSuccess} = useGetProductByIdQuery({idProduct});
+  const {productId} = useParams()
+  const {data: isData, isLoading, isSuccess} = useGetProductByIdQuery({idProduct: productId});
   const [addToCart, {loadCart}] = useAddToCartMutation();
   const { userInfo } = store.getState().reducer
   const navigate = useNavigate()
@@ -31,18 +31,22 @@ export default function ProductDetail() {
   const [getColor, setColor] = useState("");
   const [indexAttr, setIndexAttr] = useState(0);
   const [price, setPrice] = useState("");
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+  // const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+
 
   const handleAddToCart = async (e) => {
     e.preventDefault()
-    if(!userInfo?.account) navigate('/signin')
+    if(!userInfo) {
+      navigate('/signin')
+     
+    }
 
-    const { _id: userId} = userInfo.account
+
+    const { _id: userId} = userInfo
     const {name, description, main_image} = isData
     const { color, id, price, image } = isData.attributes[indexAttr]
-
     await addToCart({
-      productId: idProduct,
+      productId,
       userId,
       name,
       description,
@@ -142,7 +146,7 @@ export default function ProductDetail() {
         
                 </div>
 
-                <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
+                <RadioGroup className="mt-4">
                   <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                     {isData.attributes.map((value, index) => (
                       <RadioGroup.Option

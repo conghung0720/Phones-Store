@@ -4,7 +4,7 @@ import Button from "../../../../components/Button/Button"
 import Input from "../../../../components/Input/Input"
 import { useLoginMutation, useRegisterMutation } from "../../../../api/api";
 import { store } from "../../../../store";
-import { setUser } from "../../../../store/redux/userSlice";
+import { decodeUser, setUser } from "../../../../store/redux/userSlice";
 import { useNavigate } from "react-router-dom";
 
 
@@ -27,9 +27,11 @@ const SigninForm = () => {
         userName,
         password,
       }).then(value => {
-        localStorage.setItem("access_token", value.data.metadata.tokens.accessToken)
-        store.dispatch(setUser(value.data.metadata.tokens.accessToken))
-        navigate('/')
+        const {accessToken, refreshToken} = value.data.metadata.tokens
+        localStorage.setItem("access_token", accessToken)
+        localStorage.setItem("refresh_token", refreshToken)
+        store.dispatch(decodeUser())
+        return navigate('/')
       })
     }, 3000);
     

@@ -4,7 +4,7 @@ import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import CartItems from "./CartItems";
 import { store } from "../../store";
 import { incremented } from "../../store/redux/userSlice";
-import { useRegisterMutation, useGetCartQuery } from "../../api/api";
+import { useRegisterMutation, useGetCartQuery, useGetCartUserQuery } from "../../api/api";
 import { Link } from "react-router-dom";
 import { formattedPrice } from "../../utils/formatedPrice";
 import ErrorTeamplate from "../../components/ErrorTemplate/ErrorTemplate";
@@ -18,28 +18,26 @@ const Cart = () => {
 
   const {userInfo} = store.getState().reducer;
   
-  const {data: isData, isSuccess, isLoading} = useGetCartQuery({userId: userInfo?._id})
+  const {data: isData, isSuccess, isLoading} = useGetCartUserQuery()
 
-
-
-  useEffect(() => {
-    if(isSuccess){
-      setLoadingCart(isData)
-      
-    }
-  }, [isData, isLoading, isSuccess])
   
   return (
     <>
       <Header />
-      {loadingCartItem?.items_cart.length > 0 ? 
+      {isData?.items_cart.length > 0 ? 
      <div className=" py-[5%] flex justify-between px-[3%]">
         <div className="block">
         {/* <h1 className="text-[30px] font-bold">Giỏ hàng</h1> */}
         </div>
         <div className="w-[60%] py-10">
-          { loadingCartItem ? loadingCartItem.items_cart.map(value =>
-           <CartItems productId={value.productId} loadingCartItem={setLoadingCart} attrId={value.id} handleChangeValue={() => setChangeQuantity} quantity={value.quantity} name={value.name} color={value.color} price={value.price} image={value.image} />) 
+          { isData ? isData.items_cart.map((value, index) =>
+           <CartItems 
+           key={index} 
+           productId={value.productId} 
+           attrId={value.id} handleChangeValue={() => setChangeQuantity} 
+           quantity={value.quantity} name={value.name} 
+           color={value.color} 
+           price={value.price} image={value.image} />) 
           : <div></div>}
         </div>
 
@@ -49,7 +47,7 @@ const Cart = () => {
             <ul className="divide-y divide-solid text-slate-500">
               <li className="py-2 flex justify-between">
                 <span>Tổng giá</span>
-                <span className="text-black">{loadingCartItem && formattedPrice(loadingCartItem.total_price_cart)}</span>
+                <span className="text-black">{isData && formattedPrice(isData.total_price_cart)}</span>
               </li>
               <li className="py-2 flex justify-between">
                 <span>Tiền ship</span>
@@ -59,7 +57,7 @@ const Cart = () => {
                 <span className="text-black">25.000 VND</span></li>
                 <li className="py-2 flex justify-between">
                 <span className="text-black font-semibold text-[20px]">Tổng giá</span>
-                <span className="text-black text-[20px]">{loadingCartItem && formattedPrice(loadingCartItem?.total_price_cart + 25000 + 25000)}</span></li>    
+                <span className="text-black text-[20px]">{isData && formattedPrice(isData?.total_price_cart + 25000 + 25000)}</span></li>    
                 <Link to="/checkout">
                   <button
                     type="submit"

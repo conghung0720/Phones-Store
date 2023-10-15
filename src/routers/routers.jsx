@@ -9,6 +9,7 @@ import OrderHistory from "../pages/OrderHistory";
 import ProductList from "../pages/ProductList";
 import Checkout from "../pages/Checkout";
 import Cart from "../pages/Cart/Cart";
+import Admin from "../pages/Admin";
 
 const routers = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const routers = createBrowserRouter([
   {
     path: "/checkout",
     element: <Checkout/>
+  },
+  {
+    path: "/admin/:feature",
+    element: <Admin/>
   }
 ]);
 

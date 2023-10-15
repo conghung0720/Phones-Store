@@ -1,12 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { store } from '../store'
-import { baseQueryWithReauth } from './axios'
+import { baseQueryWithReauth } from './middleware'
 
 
-// const {userInfo} = store.getState().reducer;
 
 const HEADERS = {
-  // "CLIENT_ID": userInfo?._id,
   "x-rtoken-id": localStorage.getItem('refresh_token'),
   "authorization": localStorage.getItem("access_token")
 }
@@ -14,9 +11,11 @@ const HEADERS = {
 export const productsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_HOST }),
+    tagTypes: ['Product'],
     endpoints: (builder) => ({
       getListPhones: builder.query({
         query: () => `product/list`,
+        providesTags: ['Product']
       }),
       getProductById: builder.query({
         query: ({idProduct}) => `product/${idProduct}`
@@ -27,6 +26,30 @@ export const productsApi = createApi({
             method: "POST",
             body: data,
           })
+      }),
+      updateProduct: builder.mutation({
+        query: (data) => ({
+          url: `product/updateProduct`,
+          method: "POST",
+          body: data,
+        }),
+        invalidatesTags: ['Product']
+    }),
+      newProduct: builder.mutation({
+        query: (data) => ({
+          url: `product`,
+          method: "POST",
+          body: data
+        }),
+        invalidatesTags: ['Product']
+      }),
+      deleteProduct: builder.mutation({
+        query: (data) => ({
+          url: `product/delete`,
+          method: "POST",
+          body: data
+        }),
+        invalidatesTags: ['Product']
       })
     }),
   })
@@ -63,13 +86,15 @@ export const authApi = createApi({
 export const cartApi = createApi({
     reducerPath: 'cartApi',
     baseQuery: baseQueryWithReauth,
+    tagTypes: ['Cart'],
     endpoints: (builder) => ({
         addToCart: builder.mutation({
             query: (data) => ({
                 url: "cart",
                 method: "POST",
                 body: data,
-            })
+            }),
+            invalidatesTags: ['Cart']
         }),
         updateItem: builder.mutation({
           query: (data) => ({
@@ -77,10 +102,16 @@ export const cartApi = createApi({
               method: "POST",
               body: data,
               headers: HEADERS
-          })
+          }),
+          invalidatesTags: ['Cart']
       }),
         getCart: builder.query({
           query: ({userId}) => `cart/findCart/${userId}`,
+          providesTags: ['Cart']
+        }),
+        getCartUser: builder.query({
+          query: () => `cart/findCart`,
+          providesTags: ['Cart']
         }),
         
     })
@@ -88,9 +119,7 @@ export const cartApi = createApi({
 
 export const checkoutApi = createApi({
     reducerPath: 'checkoutApi',
-      baseQuery: fetchBaseQuery({
-          baseUrl: process.env.REACT_APP_HOST
-      }),
+    baseQuery: baseQueryWithReauth,
       endpoints: (builder) => ({
         checkout: builder.mutation({
           query: (data) => ({
@@ -102,29 +131,64 @@ export const checkoutApi = createApi({
       })      
 })
 
-export const orderHistoryApi = createApi({
-  reducerPath: 'orderHistoryApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_HOST
-    }),
+export const orderDetailApi = createApi({
+  reducerPath: 'orderDetailApi',
+    baseQuery: baseQueryWithReauth,
+    tagTypes: ['OrderDetail'],
     endpoints: (builder) => ({
       orderHistory: builder.mutation({
         query: (data) => ({
-          url: "/order-history",
+          url: "/orderDetail/history",
           method: "POST",
           body: data
         }),
       }),
       getOrderHistoryUser: builder.query({
-        query: ({userId}) => `/order-history/${userId}`
-      })
+        query: () => `/orderDetail/history`,
+        providesTags: ['OrderDetail']
+      }),
+      cancelOrderDetail: builder.mutation({
+        query: (data) => ({
+          url: `/orderDetail/cancel`,
+          method: "POST",
+          body: data
+        }),
+        invalidatesTags: ['OrderDetail']
+      }),
+      deliveringOrderDetail: builder.mutation({
+        query: (data) => ({
+          url: `/orderDetail/delivering`,
+          method: "POST",
+          body: data
+        }),
+        invalidatesTags: ['OrderDetail']
+      }),
+      completedOrderDetail: builder.mutation({
+        query: (data) => ({
+          url: `/orderDetail/completed`,
+          method: "POST",
+          body: data
+        }),
+        invalidatesTags: ['OrderDetail']
+      }),
+      gettingItemOrderDetail: builder.mutation({
+        query: (data) => ({
+          url: `/orderDetail/getting_item`,
+          method: "POST",
+          body: data
+        }),
+        invalidatesTags: ['OrderDetail']
+      }),
     })      
 })
 
 
-export const { useOrderHistoryMutation, useGetOrderHistoryUserQuery } = orderHistoryApi
+export const { useOrderHistoryMutation, useGetOrderHistoryUserQuery, 
+  useCancelOrderDetailMutation, useCompletedOrderDetailMutation, useDeliveringOrderDetailMutation, 
+  useGettingItemOrderDetailMutation } 
+= orderDetailApi
 export const { useCheckoutMutation } = checkoutApi
-export const { useAddToCartMutation, useGetCartQuery, useUpdateItemMutation} = cartApi
+export const { useAddToCartMutation, useGetCartQuery, useUpdateItemMutation, useGetCartUserQuery} = cartApi
 export const { useRegisterMutation, useLoginMutation, useLogoutMutation} = authApi
-export const { useGetListPhonesQuery, useGetProductByIdQuery, useGetProductSubByIdMutation } = productsApi
+export const { useGetListPhonesQuery, useGetProductByIdQuery, useGetProductSubByIdMutation, useUpdateProductMutation, useNewProductMutation, useDeleteProductMutation } = productsApi
 

@@ -47,9 +47,9 @@ import { useEffect, useState } from "react"
                         {product.name}
                       </Link>
                     </h3>
-                    <p className="mt-1 text-sm text-gray-500">{product.attributes[0].color}</p>
+                    <p className="mt-1 text-sm text-gray-500">{product.attributes.filter(value => value.quantity > 0)[0].color}</p>
                   </div>
-                  <p className="text-sm font-medium text-gray-900">{formattedPrice(product.price)}</p>
+                  <p className="text-sm font-medium text-gray-900">{formattedPrice(product.attributes.filter(value => value.quantity > 0)[0].price)}</p>
                 </div>
               </div>
             ))}

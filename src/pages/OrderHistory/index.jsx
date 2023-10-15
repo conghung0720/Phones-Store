@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Header from '../../components/Header/Header'
-import { EllipsisHorizontalCircleIcon, EllipsisVerticalIcon } from '@heroicons/react/20/solid'
+import { EllipsisHorizontalCircleIcon } from '@heroicons/react/20/solid'
 import { store } from '../../store';
-import { useGetOrderHistoryUserQuery, useOrderHistoryMutation } from '../../api/api';
+import { useGetOrderHistoryUserQuery } from '../../api/api';
 import { formattedPrice } from '../../utils/formatedPrice';
+import { convertDate } from '../../utils/convertDate';
 
 const OrderHistory = () => {
     const {userInfo} = store.getState().reducer;
-    const {data: isData, isSuccess} = useGetOrderHistoryUserQuery({userId: userInfo?._id})
+    const {data: isData, isSuccess} = useGetOrderHistoryUserQuery()
   return (
     <>
       <Header />
@@ -29,7 +30,7 @@ const OrderHistory = () => {
                     <h1 className="font-medium tracking-tight text-gray-900">
                       Ngày đặt
                     </h1>
-                    <span>{value.createAt}</span>
+                    <span>{convertDate(value.createAt)}</span>
                   </li>
                   <li>
                     <h1 className="font-medium tracking-tight text-gray-900">

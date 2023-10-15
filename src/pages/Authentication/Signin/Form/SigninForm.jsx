@@ -6,6 +6,7 @@ import { useLoginMutation, useRegisterMutation } from "../../../../api/api";
 import { store } from "../../../../store";
 import { decodeUser, setUser } from "../../../../store/redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import CalloutRadix from "../../../../components/Form/Callout";
 
 
 const SigninForm = () => {
@@ -13,6 +14,8 @@ const SigninForm = () => {
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [isCallout, setCallout] = useState(false);
+  const [calloutError, setCallOutError] = useState('');
   const [login, { isloading }] = useLoginMutation();
   const navigate = useNavigate()
 
@@ -27,6 +30,11 @@ const SigninForm = () => {
         userName,
         password,
       }).then(value => {
+        if(value.error){
+          setCallOutError(value.error.data.message)
+          setCallout(true)
+          return;
+        }
         const {accessToken, refreshToken} = value.data.metadata.tokens
         localStorage.setItem("access_token", accessToken)
         localStorage.setItem("refresh_token", refreshToken)
@@ -71,6 +79,7 @@ const SigninForm = () => {
           />
         </div>
       </form>
+        {isCallout && <CalloutRadix text={calloutError}/>}
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span class="w-full border-t"></span>

@@ -7,12 +7,12 @@ import Footer from '../../components/Footer/Footer'
 const ProductList = () => {
   return (
     <>
-    <FilterCategory>
-        <ItemList/>
-    </FilterCategory>
-    <Footer/>
+      <FilterCategory>
+        <ItemList />
+      </FilterCategory>
+      <Footer />
     </>
-  )
+  );
 }
 
 export default ProductList

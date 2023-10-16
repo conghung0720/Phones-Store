@@ -90,13 +90,14 @@ const SigninForm = () => {
           </span>
         </div>
       </div>
-      <Button
+      <Button  
         disabled={isLoading}
         loading={isLoading}
         icon={true}
         colorButton="bg-white"
         textColor="text-black"
         title="Gmail"
+        margin-left ="20px"
       />
       <div className="w-[60%] m-auto">
         <p class="px-8 text-center text-sm text-slate-600">

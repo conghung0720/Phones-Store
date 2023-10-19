@@ -8,6 +8,34 @@ const HEADERS = {
   "authorization": localStorage.getItem("access_token")
 }
 
+export const userApi = createApi({
+  reducerPath: 'usersApi',
+  baseQuery: baseQueryWithReauth,
+  tagTypes: ['User'],
+  endpoints: (builder) => ({
+    getListUser: builder.query({
+      query: () => `user`,
+      providesTags: ['User']
+    }),
+    getUserById: builder.query({
+      query: (data) => `user/profileById/${data}`,
+      providesTags: ['User']
+    }),
+    getProfile: builder.query({
+      query: () => `user/profile`,
+      providesTags: ['User']
+    }),
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: `user/edit`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ['User']
+  }),
+  })
+})
+
 export const productsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_HOST }),
@@ -18,14 +46,16 @@ export const productsApi = createApi({
         providesTags: ['Product']
       }),
       getProductById: builder.query({
-        query: ({idProduct}) => `product/${idProduct}`
+        query: ({idProduct}) => `product/${idProduct}`,
+        providesTags: ['Product']
       }),
       getProductSubById: builder.mutation({
           query: (data) => ({
             url: `product/findSubProduct`,
             method: "POST",
             body: data,
-          })
+          }),
+          invalidatesTags: ['Product']
       }),
       updateProduct: builder.mutation({
         query: (data) => ({
@@ -46,6 +76,14 @@ export const productsApi = createApi({
       deleteProduct: builder.mutation({
         query: (data) => ({
           url: `product/delete`,
+          method: "POST",
+          body: data
+        }),
+        invalidatesTags: ['Product']
+      }),
+      commentProduct: builder.mutation({
+        query: (data) => ({
+          url: `product/comment`,
           method: "POST",
           body: data
         }),
@@ -113,7 +151,14 @@ export const cartApi = createApi({
           query: () => `cart/findCart`,
           providesTags: ['Cart']
         }),
-        
+        newCart: builder.mutation({
+          query: (data) => ({
+            url: "cart/newCart",
+            method: "POST",
+            body: data,
+        }),
+        invalidatesTags: ['Cart']
+        })
     })
 })
 
@@ -145,6 +190,14 @@ export const orderDetailApi = createApi({
       }),
       getOrderHistoryUser: builder.query({
         query: () => `/orderDetail/history`,
+        providesTags: ['OrderDetail']
+      }),
+      getOrderDetailById: builder.query({
+        query: (id) => `/orderDetail/${id}`,
+        providesTags: ['OrderDetail']
+      }),
+      getAllOrder: builder.query({
+        query: (id) => `/orderDetail/getAll`,
         providesTags: ['OrderDetail']
       }),
       cancelOrderDetail: builder.mutation({
@@ -183,12 +236,15 @@ export const orderDetailApi = createApi({
 })
 
 
+
+export const { useGetListUserQuery, useGetUserByIdQuery, useUpdateProfileMutation, useGetProfileQuery } = userApi
 export const { useOrderHistoryMutation, useGetOrderHistoryUserQuery, 
   useCancelOrderDetailMutation, useCompletedOrderDetailMutation, useDeliveringOrderDetailMutation, 
-  useGettingItemOrderDetailMutation } 
+  useGettingItemOrderDetailMutation, useGetOrderDetailByIdQuery, useGetAllOrderQuery } 
 = orderDetailApi
 export const { useCheckoutMutation } = checkoutApi
-export const { useAddToCartMutation, useGetCartQuery, useUpdateItemMutation, useGetCartUserQuery} = cartApi
+export const { useAddToCartMutation, useGetCartQuery, useUpdateItemMutation, useGetCartUserQuery, useNewCartMutation} = cartApi
 export const { useRegisterMutation, useLoginMutation, useLogoutMutation} = authApi
-export const { useGetListPhonesQuery, useGetProductByIdQuery, useGetProductSubByIdMutation, useUpdateProductMutation, useNewProductMutation, useDeleteProductMutation } = productsApi
+export const { useGetListPhonesQuery, useGetProductByIdQuery, useGetProductSubByIdMutation, useUpdateProductMutation,
+   useNewProductMutation, useDeleteProductMutation, useCommentProductMutation } = productsApi
 

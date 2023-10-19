@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import Header from '../../components/Header/Header'
 import ThumbsGallery from '../../components/Slides/ThumbsGallery/ThumbsGallery'
@@ -11,6 +11,8 @@ import ToastRadix from '../../components/Form/Toast'
 import "animate.css/animate.min.css";
 import { IconButton } from '@material-tailwind/react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
+import WriteComment from './Comments/WriteComment'
+import DisplayComment from './Comments/DisplayComment'
 
 const product = {
   href: '#',
@@ -27,10 +29,12 @@ function classNames(...classes) {
 export default function ProductDetail() {
   const {productId} = useParams()
   const {data: isData, isLoading, isSuccess} = useGetProductByIdQuery({idProduct: productId});
-  const {data: getCart} = useGetCartUserQuery();
+  const {data: getCart, isSuccess: isSuccesV2} = useGetCartUserQuery();
+  console.log(getCart);
   const [addToCart, {loadCart}] = useAddToCartMutation();
   const { userInfo } = store.getState().reducer
   const navigate = useNavigate()
+
 
   const [getColor, setColor] = useState("");
   const [indexAttr, setIndexAttr] = useState(0);
@@ -39,6 +43,7 @@ export default function ProductDetail() {
   const [titleToast, setTitleToast] = useState('Thêm vào giỏ hàng thành công')
   // const [selectedSize, setSelectedSize] = useState(product.sizes[0])
 
+  // console.log(isData);
 
   const handleAddToCart = async (e) => {
     e.preventDefault()
@@ -49,11 +54,16 @@ export default function ProductDetail() {
 
     const { _id: userId} = userInfo
     const {name, description, main_image} = isData
+    // console.log(userId);
 
     const { color, id, price, image, quantity} = isData.attributes[indexAttr]
+    if(!isSuccesV2) return;
+    console.log(getCart);
     const checkQuantityItem = getCart.items_cart?.some(value => {
       return value.productId === productId && +value.id === id && value.quantity + 1 > quantity
     })
+    console.log(checkQuantityItem);
+    console.log();
     if(checkQuantityItem) {
       return alert('Sản phẩm trong giỏ hàng đã vượt quá sản phẩm có sẵn')
     }
@@ -83,7 +93,9 @@ export default function ProductDetail() {
     setIndexAttr(indexColor)
   }
   
-  isData && !price && setPrice(isData.attributes.filter(val => val.quantity > 0)[0].price)
+  useEffect(() => {
+    isData && !price && setPrice(isData.attributes.filter(val => val.quantity > 0)[0].price)
+  }, [])
   
   return (<>
   <Header/>
@@ -210,6 +222,10 @@ export default function ProductDetail() {
         </div>
       </div>
     </div>}
+    <div className='mt-[-6%]'>
+    {/* <WriteComment/> */}
+    {isData?.comments && <DisplayComment comments={isData.comments}/>}
+    </div>
     <ToastRadix title={titleToast} position='left' isOpen={isOpenToast} setOpen={setOpenToast}/>
     <Footer/>
    </>

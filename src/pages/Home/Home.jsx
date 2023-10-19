@@ -126,7 +126,7 @@ export default function Home()
   
                 <Link
                   to="/productlist"
-                  className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700"
+                  className="inline-block rounded-md border border-transparent px-8 py-3 text-center font-medium text-white hover:bg-indigo-700 bg-purple-600"
                   >
                   Xem ngay
                 </Link>

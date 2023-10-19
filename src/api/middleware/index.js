@@ -1,8 +1,6 @@
 import { store } from "../../store";
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 
-
-
  const baseQuery = fetchBaseQuery({
     baseUrl: process.env.REACT_APP_HOST,
     prepareHeaders: (headers) => {

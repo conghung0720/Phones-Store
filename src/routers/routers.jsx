@@ -11,6 +11,7 @@ import Checkout from "../pages/Checkout";
 import Cart from "../pages/Cart/Cart";
 import Details from "../pages/Detailorders";
 import Admin from "../pages/Admin";
+import OrderDetail from "../pages/OrderHistory/OrderDetail";
 
 const routers = createBrowserRouter([
   {
@@ -49,13 +50,13 @@ const routers = createBrowserRouter([
     path: "/checkout",
     element: <Checkout/>
   },
-  {
-    path: "/details",
-    element : <Details/>
-  },
-    {
-    path: "/admin/:feature",
+   {
+    path: "/admin/",
     element: <Admin/>
+  },
+  {
+    path: '/orderDetail/:orderId',
+    element: <OrderDetail/>
   }
 ]);
 

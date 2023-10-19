@@ -8,13 +8,14 @@ import Button from '../../components/Button/Button';
 
 const Checkout = () => {
   const {userInfo} = store.getState().reducer;
-  const {data: isData, isSuccess, isLoad} = useGetCartQuery({userId: userInfo.account?._id})
+  const {data: isData, isSuccess, isLoad} = useGetCartQuery({userId: userInfo?._id})
   const [checkout, result] = useCheckoutMutation()
 
   const [isLoading, setIsLoading] = useState(false);
   const [fullName, setfullName] = useState(null);
   const [email, setEmail] = useState(null)
   const [address, setAddress] = useState(null);
+
 
   const navigate = useNavigate()
   const handleCheckout = async () => {
@@ -25,7 +26,7 @@ const Checkout = () => {
           email,
           address,
           full_name: fullName,
-          userId: userInfo.account?._id,
+          userId: userInfo?._id,
           cartId: isData._id,
           phone_number: "033344566",
           total_price: +isData.total_price_cart
@@ -56,7 +57,7 @@ const Checkout = () => {
                   <img class="m-2 h-24 w-28 rounded-md border object-cover object-center" src={value.image} alt="" />
                   <div class="flex w-full flex-col px-4 py-4">
                     <span class="font-semibold">{value.name}</span>
-                    <span class="float-right text-gray-400">{value.color}</span>
+                    <span class="float-right text-gray-400">{value.color} - x{value.quantity}</span>
                     <p class="text-lg font-bold">{formattedPrice(value.price)}</p>
                   </div>
               </div>
@@ -79,7 +80,7 @@ const Checkout = () => {
       </div>
       <label for="card-holder" class="mt-4 mb-2 block text-sm font-medium">Họ tên</label>
       <div class="relative">
-        <input onChange={(e) => setfullName(e.target.value)} value={fullName} type="text" id="card-holder" name="card-holder" class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="Your full name here" />
+        <input onChange={(e) => setfullName(e.target.value)} value={fullName} type="text" id="card-holder" name="card-holder" class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="Điền họ tên của bạn" />
         <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" />

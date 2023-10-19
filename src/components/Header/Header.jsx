@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { store } from '../../store'
 import { isExpired, decodeToken } from "react-jwt";
 import { logout, setUser } from '../../store/redux/userSlice'
+import Cart from '../Icons/Cart'
 
 
 const navigation = [
@@ -12,6 +13,12 @@ const navigation = [
   { name: 'Danh sách sản phẩm', href: '/productlist', current: false },
   { name: 'Thông tin', href: '#', current: false },
   { name: 'Giới thiệu', href: '#', current: false },
+]
+
+const menuItem = [
+  { name: 'Xem trang cá nhân', href: '/profile'},
+  { name: 'Lịch sử đặt hàng', href: '/orderhistory'},
+  { name: 'Admin', href: '/admin'},
 ]
 
 function classNames(...classes) {
@@ -78,10 +85,10 @@ export default function Header() {
                 <Link to="/cart">
                 <button
                   type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="relative rounded-full bg-gray-800 mt-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                     >
                   <span className="absolute -inset-1.5" />
-                  <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                  <Cart />
                 </button>
                   </Link>
 
@@ -108,37 +115,29 @@ export default function Header() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      {
+                        menuItem.map(item => <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={item.href}
+                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            >
+                              {item.name}
+                            </Link>
+                          )}
+                        </Menu.Item>)
+                      }
+                      <hr className="my-2 border-blue-gray-50" />
                       <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Xen trang cá nhân
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            to="/orderhistory"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Lịch sử đặt hàng
-                          </Link>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <span
-                            onClick={handleLogout}
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 cursor-pointer text-sm text-gray-700')}
-                          >
-                            Đăng xuất
-                          </span>
-                        )}
-                      </Menu.Item>
+                          {({ active }) => (
+                            <span
+                              onClick={handleLogout}
+                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            >
+                              Đăng xuất
+                            </span>
+                          )}
+                        </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu> : <Link to="/signin">

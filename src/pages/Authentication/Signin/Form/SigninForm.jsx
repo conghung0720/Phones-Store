@@ -4,8 +4,9 @@ import Button from "../../../../components/Button/Button"
 import Input from "../../../../components/Input/Input"
 import { useLoginMutation, useRegisterMutation } from "../../../../api/api";
 import { store } from "../../../../store";
-import { setUser } from "../../../../store/redux/userSlice";
+import { decodeUser, setUser } from "../../../../store/redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import CalloutRadix from "../../../../components/Form/Callout";
 
 
 const SigninForm = () => {
@@ -13,6 +14,8 @@ const SigninForm = () => {
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [isCallout, setCallout] = useState(false);
+  const [calloutError, setCallOutError] = useState('');
   const [login, { isloading }] = useLoginMutation();
   const navigate = useNavigate()
 
@@ -27,9 +30,16 @@ const SigninForm = () => {
         userName,
         password,
       }).then(value => {
-        localStorage.setItem("access_token", value.data.metadata.tokens.accessToken)
-        store.dispatch(setUser(value.data.metadata.tokens.accessToken))
-        navigate('/')
+        if(value.error){
+          setCallOutError(value.error.data.message)
+          setCallout(true)
+          return;
+        }
+        const {accessToken, refreshToken} = value.data.metadata.tokens
+        localStorage.setItem("access_token", accessToken)
+        localStorage.setItem("refresh_token", refreshToken)
+        store.dispatch(decodeUser())
+        return navigate('/')
       })
     }, 3000);
     
@@ -69,6 +79,7 @@ const SigninForm = () => {
           />
         </div>
       </form>
+        {isCallout && <CalloutRadix text={calloutError}/>}
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span class="w-full border-t"></span>
@@ -79,13 +90,14 @@ const SigninForm = () => {
           </span>
         </div>
       </div>
-      <Button
+      <Button  
         disabled={isLoading}
         loading={isLoading}
         icon={true}
         colorButton="bg-white"
         textColor="text-black"
         title="Gmail"
+        margin-left ="20px"
       />
       <div className="w-[60%] m-auto">
         <p class="px-8 text-center text-sm text-slate-600">

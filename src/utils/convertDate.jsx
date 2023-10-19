@@ -1,9 +1,8 @@
-import React from 'react'
-
-const convertDate = () => {
-  return (
-    <div>convertDate</div>
-  )
-}
-
-export default convertDate
+export const convertDate = (date) => {
+  const createdAt = new Date(date);
+  const formattedDate = createdAt.toLocaleString("vi-VN", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+  return formattedDate;
+};

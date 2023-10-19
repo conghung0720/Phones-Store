@@ -1,7 +1,8 @@
+
 const { blackA, green, mauve, slate, violet } = require('@radix-ui/colors');
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+module.exports = withMT({
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -36,5 +37,8 @@ module.exports = {
       },
     },
   },
+
   plugins: [require('@tailwindcss/aspect-ratio'),require('@tailwindcss/forms'), require('tailwind-scrollbar'),],
 };
+
+

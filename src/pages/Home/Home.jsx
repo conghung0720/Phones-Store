@@ -1,5 +1,7 @@
-import IP15 from '../../public/oppo-reno10.jpg'
-import JFOD5 from '../../public/samsung-galax-jfold5y.jpg'
+
+import IP15 from '../../Public/oppo-reno10.jpg'
+import JFOD5 from '../../Public/samsung_galax-jfold5y.jpg'
+
 
 
 // Import Swiper styles
@@ -36,7 +38,8 @@ const IMAGES_BANNER = [
   }
 ]
 
-export default function Home() {
+export default function Home() 
+{
     return (
         <>
         <Header/>
@@ -137,5 +140,4 @@ export default function Home() {
       <Footer/>
     </>
     )
-  }
-  
+}

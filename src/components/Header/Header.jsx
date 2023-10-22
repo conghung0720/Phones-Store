@@ -17,8 +17,8 @@ const navigation = [
 ]
 
 const menuItem = [
-  { name: 'Xem trang cá nhân', href: '/profile'},
-  { name: 'Lịch sử đặt hàng', href: '/orderhistory'},
+  // { name: 'Xem trang cá nhân', href: '/profile'},
+  // { name: 'Lịch sử đặt hàng', href: '/orderhistory'},
   { name: 'Admin', href: '/admin'},
 ]
 

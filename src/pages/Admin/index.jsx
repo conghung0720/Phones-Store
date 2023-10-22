@@ -7,7 +7,7 @@ import { UserList } from './Users'
 
 
 const Admin = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState(1);
+  const [selectedMenuItem, setSelectedMenuItem] = useState(3);
 
   const handleMenuItemClick = (value) => {
     setSelectedMenuItem(value);
@@ -19,8 +19,8 @@ const Admin = () => {
         <Sidebar selectedMenuItem={selectedMenuItem} handleMenuItemClick={handleMenuItemClick} />
         <div className='ml-[20em] w-[80%]'>
           {/* Hiển thị nội dung tương ứng với mục được chọn */}
-          {selectedMenuItem === 1 && <UserList />}
-          {selectedMenuItem === 2 && <ProcessOrder />}
+          {/* {selectedMenuItem === 1 && <UserList />} */}
+          {/* {selectedMenuItem === 2 && <ProcessOrder />} */}
           {selectedMenuItem === 3 && <ProductList />}
           {/* Thêm các trang hoặc nội dung khác ở đây */}
         </div>

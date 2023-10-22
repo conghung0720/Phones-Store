@@ -50,28 +50,28 @@ export default function Sidebar({ selectedMenuItem, handleMenuItemClick }) {
           }
         >
           <ListItem className="p-0 " selected={open === 1}>
-            <AccordionHeader onClick={() => handleMenuItemClick(1)} className="border-b-0 p-3">
+            {/* <AccordionHeader onClick={() => handleMenuItemClick(1)} className="border-b-0 p-3">
               <ListItemPrefix>
                 <PresentationChartBarIcon className="h-5 w-5 mr-0" />
               </ListItemPrefix>
               <Typography color="blue-gray" className="mr-auto font-normal">
                 Danh sách người dùng
               </Typography>
-            </AccordionHeader>
+            </AccordionHeader> */}
           </ListItem>
         </Accordion>
         <Accordion
           open={open === 2}
         >
           <ListItem className="p-0" selected={open === 2}>
-            <AccordionHeader onClick={() => handleMenuItemClick(2)} className="border-b-0 p-3">
+            {/* <AccordionHeader onClick={() => handleMenuItemClick(2)} className="border-b-0 p-3">
               <ListItemPrefix>
                 <ShoppingBagIcon className="h-5 w-5" />
               </ListItemPrefix>
               <Typography color="blue-gray" className="mr-auto font-normal">
                 Danh sách đơn hàng
               </Typography>
-            </AccordionHeader>
+            </AccordionHeader> */}
           </ListItem>
 
           <ListItem className="p-0" selected={open === 2}>

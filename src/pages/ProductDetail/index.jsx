@@ -8,7 +8,6 @@ import { formattedPrice } from '../../utils/formatedPrice'
 import Footer from '../../components/Footer/Footer'
 import { store } from '../../store'
 import ToastRadix from '../../components/Form/Toast'
-import "animate.css/animate.min.css";
 import { IconButton } from '@material-tailwind/react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import WriteComment from './Comments/WriteComment'
@@ -177,13 +176,13 @@ export default function ProductDetail() {
               {/* Sizes */}
   
 
-              <button
+              {/* <button
                 onClick={handleAddToCart}
                 type="submit"
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none"
                 >
                 Thêm vào giỏ hàng
-              </button>
+              </button> */}
             </form>
           </div>
 
@@ -224,7 +223,7 @@ export default function ProductDetail() {
     </div>}
     <div className='mt-[-6%]'>
     {/* <WriteComment/> */}
-    {isData?.comments && <DisplayComment comments={isData.comments}/>}
+    {/* {isData?.comments && <DisplayComment comments={isData.comments}/>} */}
     </div>
     <ToastRadix title={titleToast} position='left' isOpen={isOpenToast} setOpen={setOpenToast}/>
     <Footer/>

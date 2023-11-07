@@ -19,30 +19,30 @@ const subCategories = [
   { name: 'Google Pixel', href: '#' },
   { name: 'Oppo', href: '#' },
 ]
-const filters = [
-  {
-    id: 'color',
-    name: 'Màu sắc',
-    options: [
-      { value: 'white', label: 'Màu trắng', checked: false },
-      { value: 'beige', label: 'Màu be', checked: false },
-      { value: 'blue', label: 'Màu xanh', checked: true },
-      { value: 'brown', label: 'Màu nâu', checked: false },
-      { value: 'green', label: 'Màu xanh lá', checked: false },
-      { value: 'purple', label: 'Màu tím', checked: false },
-    ],
-  },
-  {
-    id: 'category',
-    name: 'Bộ nhớ',
-    options: [
-      { value: '32GB', label: '32GB', checked: false },
-      { value: '64GB', label: '64GB', checked: false },
-      { value: '128GB', label: '128GB', checked: true },
-      { value: '284GB', label: '284GB', checked: false },
-      { value: '564GB', label: '564GB', checked: false },
-    ],
-  },
+// const filters = [
+//   {
+//     id: 'color',
+//     name: 'Màu sắc',
+//     options: [
+//       { value: 'white', label: 'Màu trắng', checked: false },
+//       { value: 'beige', label: 'Màu be', checked: false },
+//       { value: 'blue', label: 'Màu xanh', checked: true },
+//       { value: 'brown', label: 'Màu nâu', checked: false },
+//       { value: 'green', label: 'Màu xanh lá', checked: false },
+//       { value: 'purple', label: 'Màu tím', checked: false },
+//     ],
+//   },
+//   {
+//     id: 'category',
+//     name: 'Bộ nhớ',
+//     options: [
+//       { value: '32GB', label: '32GB', checked: false },
+//       { value: '64GB', label: '64GB', checked: false },
+//       { value: '128GB', label: '128GB', checked: true },
+//       { value: '284GB', label: '284GB', checked: false },
+//       { value: '564GB', label: '564GB', checked: false },
+//     ],
+//   },
   // {
   //   id: 'size',
   //   name: 'Size',
@@ -55,7 +55,7 @@ const filters = [
   //     { value: '40l', label: '40L', checked: true },
   //   ],
   // },
-]
+//]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -121,7 +121,7 @@ export default function FilterCategory({children}) {
                       ))}
                     </ul>
 
-                    {filters.map((section) => (
+                    {/* {filters.map((section) => (
                       <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6">
                         {({ open }) => (
                           <>
@@ -162,7 +162,7 @@ export default function FilterCategory({children}) {
                           </>
                         )}
                       </Disclosure>
-                    ))}
+                    ))} */}
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
@@ -175,7 +175,7 @@ export default function FilterCategory({children}) {
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">Danh sách sản phẩm</h1>
 
             <div className="flex items-center">
-              <Menu as="div" className="relative inline-block text-left">
+              {/* <Menu as="div" className="relative inline-block text-left">
                 <div>
                   <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                     Sắp xếp
@@ -216,9 +216,9 @@ export default function FilterCategory({children}) {
                     </div>
                   </Menu.Items>
                 </Transition>
-              </Menu>
+              </Menu> */}
 
-              <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+              {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
                 <span className="sr-only">View grid</span>
                 <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
               </button>
@@ -229,7 +229,7 @@ export default function FilterCategory({children}) {
                 >
                 <span className="sr-only">Filters</span>
                 <FunnelIcon className="h-5 w-5" aria-hidden="true" />
-              </button>
+              </button> */}
             </div>
           </div>
 
@@ -250,7 +250,7 @@ export default function FilterCategory({children}) {
                   ))}
                 </ul>
 
-                {filters.map((section) => (
+                {/* {filters.map((section) => (
                   <Disclosure as="div" key={section.id} className="border-b border-gray-200 py-6">
                       {({ open }) => (
                           <>
@@ -291,7 +291,7 @@ export default function FilterCategory({children}) {
                       </>
                     )}
                   </Disclosure>
-                ))}
+                ))} */}
               </form>
 
               {/* Product grid */}

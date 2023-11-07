@@ -29,7 +29,7 @@ export default function Header() {
   const {userInfo} = store.getState().reducer;
   const navigate = useNavigate()
   
-
+// fix UI 
 
   const handleLogout = () => {
     store.dispatch(logout())

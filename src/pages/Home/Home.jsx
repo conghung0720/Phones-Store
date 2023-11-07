@@ -1,6 +1,7 @@
 
 import IP15 from '../../Public/oppo-reno10.jpg'
-import JFOD5 from '../../Public/samsung_galax-jfold5y.jpg'
+//
+//import JFOD5 from '../../Public/samsung_galax-jfold5y.jpg'
 
 
 

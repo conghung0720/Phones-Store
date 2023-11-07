@@ -12,6 +12,7 @@ import Cart from "../pages/Cart/Cart";
 import Details from "../pages/Detailorders";
 import Admin from "../pages/Admin";
 import OrderDetail from "../pages/OrderHistory/OrderDetail";
+import AboutPage from "../pages/About/AboutPage";
 
 const routers = createBrowserRouter([
   {
@@ -38,10 +39,10 @@ const routers = createBrowserRouter([
     path: "/productlist",
     element: <ProductList/>
   },
-  // {
-  //   path: "/cart",
-  //   element: <Cart/>
-  // },
+  {
+    path: "/cart",
+    element: <Cart/>
+  },
   {
     path: "/orderHistory",
     element: <OrderHistory/>
@@ -57,6 +58,10 @@ const routers = createBrowserRouter([
   {
     path: '/orderDetail/:orderId',
     element: <OrderDetail/>
+  },
+  {
+    path: '/about',
+    element: <AboutPage/>
   }
 ]);
 

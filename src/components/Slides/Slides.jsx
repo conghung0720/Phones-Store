@@ -22,7 +22,7 @@ const Slides = ({DATA}) => {
       >
       {
          
-          DATA.map(value => <SwiperSlide><img className='w-full h-[24em] object-center' src={value.image}/></SwiperSlide>)
+          DATA.map(value => <SwiperSlide><img className='w-full h-[24em] object-center rounded-xl' src={value.image}/></SwiperSlide>)
         }
     </Swiper>
         

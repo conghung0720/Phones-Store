@@ -12,7 +12,7 @@ import { useGetProfileQuery } from '../../api/api'
 const navigation = [
   { name: 'Trang chủ', href: '/', current: false },
   { name: 'Danh sách sản phẩm', href: '/productlist', current: false },
-  { name: 'Thông tin', href: '#', current: false },
+  { name: 'Thông tin', href: '/about', current: false },
   { name: 'Giới thiệu', href: '#', current: false },
 ]
 

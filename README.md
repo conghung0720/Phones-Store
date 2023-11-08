@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+Nhóm 2: Web bán điện thoại
+Thành viên nhóm
+Huỳnh Thanh Bình (Scrum Master)
+Đoàn Đức Đại (Dev)
+Phạm Tuyết Hà (Product Owner)
+Đặng Công Hùng (Dev)
+Đề tài web bán điện thoại
+image
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Hệ thống bán điện thoại Online “BHHD” là hệ thống cho phép người dùng lựa chọn và mua sắm các sản phẩm thông qua website. Khách hàng có thể dễ dàng xem thông tin chi tiết về các sản phẩm, chính sách bảo hành, đổi trả và chính sách giá cả của công ty. Việc thanh toán có thể được thực hiện trực tuyến thông qua các phương thức thanh toán an toàn. Khách hàng cũng có thể lựa chọn nhận hàng tại cửa hàng hoặc sử dụng dịch vụ giao hàng có phí của công ty. Hệ thống có tính năng để khách hàng dễ dàng sử dụng như :Cho phép khách hàng đặt hàng ,theo dõi tình trạng đơn hàng ,xem được lịch sử đơn hàng sau khi đã mua hàng cập nhật thông tin cá nhân Ngoài ra, hệ thống còn có các tính năng để quản lí như:
 
-## Available Scripts
+Quản lý số lượng hàng tồn kho: Hệ thống cho phép cập nhật số lượng sản phẩm trong kho. Khi có đơn hàng được đặt, hệ thống sẽ tự động giảm số lượng sản phẩm trong kho để đảm bảo không bán quá số lượng hàng có sẵn. Điều này giúp đảm bảo rằng người dùng chỉ có thể mua các sản phẩm có sẵn trong kho.
+Quản lý đơn hàng: Hệ thống cho phép quản lý đơn hàng từ phía người dùng và từ phía admin. Người dùng có thể xem lại các đơn hàng đã mua, bao gồm thông tin chi tiết về sản phẩm, trạng thái đơn hàng và thông tin giao hàng. Họ cũng có thể hủy đơn hàng nếu đơn hàng vẫn chưa được giao.
+Theo dõi tình trạng giao hàng: Hệ thống theo dõi tình trạng giao hàng của các đơn hàng. Người dùng có thể xem trạng thái đơn hàng, chẳng hạn như đã duyệt, đang giao, đã giao, hoàn tất hoặc đã hủy. Điều này giúp người dùng biết được đơn hàng của họ đang ở giai đoạn nào và khi nào sẽ nhận được hàng.
+Cập nhật thông tin khách hàng: Hệ thống cho phép cập nhật thông tin cá nhân của khách hàng, bao gồm địa chỉ, số điện thoại và các thông tin khác. Người dùng có thể thay đổi và cập nhật thông tin cá nhân của mình khi cần thiết.
+Quản lý đơn hàng từ phía admin: Admin có quyền xem tất cả các đơn hàng và có lựa chọn xem theo khách hàng, ngày đặt hàng hoặc trạng thái của đơn hàng. Điều này giúp admin có cái nhìn tổng quan về các đơn hàng và quản lý chúng một cách hiệu quả. Chi tiết về các chức năng và thông tin sản phẩm điện thoại di động mà công ty cung cấp, bạn có thể tham khảo thêm tại: https://cellphones.com.vn/
+Công nghệ
+Nestjs + Mô hình MVC + MongoDB
+https://nestjs.com/ image
 
-In the project directory, you can run:
+https://www.mongodb.com/docs/manual/core/document/ image
 
-### `npm start`
+Những gì đã làm
+Những tính năng đã làm :
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Tính năng quản lý sản phẩm
+Tính năng quản lý tài khoản
+Tính năng quản lý khách hàng
+Tính năng quản lý tiến trình đơn hàng
+Tính năng quản lý giá cả và khuyến mãi
+Tính năng quản lý giỏ hàng
+Tính năng quản lý kho hàng
+Tính năng quản lý danh mục sản phẩm
+Tính năng đánh giá
+Tính năng đặt hàng
+Hướng phát triển
+Có thể thương mại điện tử cho web và bán được sản phẩm
+Đặt hàng có thể thanh toán bằng nhiều hình thức hơn như Momo , ZaloPay , VnPay

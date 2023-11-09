@@ -1,9 +1,31 @@
-import { Fragment, useEffect } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link, useNavigate } from 'react-router-dom'
-import { store } from '../../store'
+import { Fragment, useEffect } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import {
+  Bars3Icon,
+  BellIcon,
+  ShoppingCartIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { Link, useNavigate } from "react-router-dom";
+import { store } from "../../store";
 import { isExpired, decodeToken } from "react-jwt";
+
+import { logout, setUser } from "../../store/redux/userSlice";
+import Cart from "../Icons/Cart";
+
+const navigation = [
+  { name: "Trang chủ", href: "/", current: false },
+  { name: "Danh sách sản phẩm", href: "/productlist", current: false },
+  { name: "Thông tin", href: "#", current: false },
+  { name: "Giới thiệu", href: "#", current: false },
+];
+
+const menuItem = [
+  { name: "Xem trang cá nhân", href: "/profile" },
+  { name: "Lịch sử đặt hàng", href: "/orderhistory" },
+  { name: "Admin", href: "/admin" },
+];
+
 import { logout, setUser } from '../../store/redux/userSlice'
 import Cart from '../Icons/Cart'
 import { useGetProfileQuery } from '../../api/api'
@@ -22,22 +44,25 @@ const menuItem = [
   { name: 'Admin', href: '/admin'},
 ]
 
+
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Header() {
+
   const {userInfo} = store.getState().reducer;
   const {data: isData, isSuccess} = useGetProfileQuery()
   const navigate = useNavigate()
   
 
 
-  const handleLogout = () => {
-    store.dispatch(logout())
-    navigate('/signin')
-  }
+  // fix UI
 
+  const handleLogout = () => {
+    store.dispatch(logout());
+    navigate("/signin");
+  };
 
   return (
     <Disclosure as="nav" className="bg-slate12">
@@ -72,10 +97,12 @@ export default function Header() {
                         key={item.name}
                         to={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </Link>
@@ -128,19 +155,23 @@ export default function Header() {
                           {({ active }) => (
                             <span
                               onClick={handleLogout}
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
                             >
                               Đăng xuất
                             </span>
                           )}
                         </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu> : <Link to="/signin">
-                  <span className='px-5 text-gray-100'>
-                    Đăng nhập
-                  </span>
-                  </Link>}
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                ) : (
+                  <Link to="/signin">
+                    <span className="px-5 text-gray-100">Đăng nhập</span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -153,10 +184,12 @@ export default function Header() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -166,5 +199,5 @@ export default function Header() {
         </>
       )}
     </Disclosure>
-  )
+  );
 }

@@ -17,11 +17,11 @@ Hệ thống bán điện thoại Online “BHHD” là hệ thống cho phép n
 * Quản lý đơn hàng từ phía admin: Admin có quyền xem tất cả các đơn hàng và có lựa chọn xem theo khách hàng, ngày đặt hàng hoặc trạng thái của đơn hàng. Điều này giúp admin có cái nhìn tổng quan về các đơn hàng và quản lý chúng một cách hiệu quả. Chi tiết về các chức năng và thông tin sản phẩm điện thoại di động mà công ty cung cấp, bạn có thể tham khảo thêm tại: https://cellphones.com.vn/
 ## Công nghệ
 Nestjs + Mô hình MVC + MongoDB
-https://nestjs.com/ 
+* https://nestjs.com/ 
 ![image](https://github.com/conghung0720/Phones-Store/assets/109029860/a44b0038-0833-47db-9720-aea411690cfd)
 
 
-https://www.mongodb.com/docs/manual/core/document/ 
+* https://www.mongodb.com/docs/manual/core/document/ 
 ![image](https://github.com/conghung0720/Phones-Store/assets/109029860/2ec83fc0-b284-4e8e-8ff8-1ac299fc1595)
 
 

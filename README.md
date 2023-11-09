@@ -1,8 +1,8 @@
 # Nhóm 2: Web bán điện thoại
 ## Thành viên nhóm
-  Huỳnh Thanh Bình (Scrum Master)
-  Đoàn Đức Đại (Dev)
-  Phạm Tuyết Hà (Product Owner)
+  Huỳnh Thanh Bình (Scrum Master),
+  Đoàn Đức Đại (Dev),
+  Phạm Tuyết Hà (Product Owner),
   Đặng Công Hùng (Dev)
 # Đề tài web bán điện thoại
 ![image](https://github.com/conghung0720/Phones-Store/assets/109029860/ffa89f31-0575-4a30-94e1-8bdc045d0bc8)

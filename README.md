@@ -1,9 +1,9 @@
 # Nhóm 2: Web bán điện thoại
 ## Thành viên nhóm
-Huỳnh Thanh Bình (Scrum Master)
-Đoàn Đức Đại (Dev)
-Phạm Tuyết Hà (Product Owner)
-Đặng Công Hùng (Dev)
+  Huỳnh Thanh Bình (Scrum Master)
+  Đoàn Đức Đại (Dev)
+  Phạm Tuyết Hà (Product Owner)
+  Đặng Công Hùng (Dev)
 Đề tài web bán điện thoại
 ![image](https://github.com/conghung0720/Phones-Store/assets/109029860/ffa89f31-0575-4a30-94e1-8bdc045d0bc8)
 
@@ -18,7 +18,8 @@ Quản lý đơn hàng từ phía admin: Admin có quyền xem tất cả các �
 ## Công nghệ
 Nestjs + Mô hình MVC + MongoDB
 https://nestjs.com/ 
-https://visionslabs.io/wp-content/uploads/2021/03/visionslabs-NestJS-backend-framework-pro-webove-aplikace-600x315.jpg
+![image](https://github.com/conghung0720/Phones-Store/assets/109029860/a44b0038-0833-47db-9720-aea411690cfd)
+
 
 https://www.mongodb.com/docs/manual/core/document/ 
 ![image](https://github.com/conghung0720/Phones-Store/assets/109029860/2ec83fc0-b284-4e8e-8ff8-1ac299fc1595)

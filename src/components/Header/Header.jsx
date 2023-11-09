@@ -1,41 +1,44 @@
-import { Fragment, useEffect } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link, useNavigate } from 'react-router-dom'
-import { store } from '../../store'
+import { Fragment, useEffect } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import {
+  Bars3Icon,
+  BellIcon,
+  ShoppingCartIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { Link, useNavigate } from "react-router-dom";
+import { store } from "../../store";
 import { isExpired, decodeToken } from "react-jwt";
-import { logout, setUser } from '../../store/redux/userSlice'
-import Cart from '../Icons/Cart'
-
+import { logout, setUser } from "../../store/redux/userSlice";
+import Cart from "../Icons/Cart";
 
 const navigation = [
-  { name: 'Trang chủ', href: '/', current: false },
-  { name: 'Danh sách sản phẩm', href: '/productlist', current: false },
-  { name: 'Thông tin', href: '#', current: false },
-  { name: 'Giới thiệu', href: '#', current: false },
-]
+  { name: "Trang chủ", href: "/", current: false },
+  { name: "Danh sách sản phẩm", href: "/productlist", current: false },
+  { name: "Thông tin", href: "#", current: false },
+  { name: "Giới thiệu", href: "#", current: false },
+];
 
 const menuItem = [
-  { name: 'Xem trang cá nhân', href: '/profile'},
-  { name: 'Lịch sử đặt hàng', href: '/orderhistory'},
-  { name: 'Admin', href: '/admin'},
-]
+  { name: "Xem trang cá nhân", href: "/profile" },
+  { name: "Lịch sử đặt hàng", href: "/orderhistory" },
+  { name: "Admin", href: "/admin" },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Header() {
-  const {userInfo} = store.getState().reducer;
-  const navigate = useNavigate()
-  
-// fix UI 
+  const { userInfo } = store.getState().reducer;
+  const navigate = useNavigate();
+
+  // fix UI
 
   const handleLogout = () => {
-    store.dispatch(logout())
-    navigate('/signin')
-  }
-
+    store.dispatch(logout());
+    navigate("/signin");
+  };
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -70,10 +73,12 @@ export default function Header() {
                         key={item.name}
                         to={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </Link>
@@ -83,68 +88,76 @@ export default function Header() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Link to="/cart">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 mt-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    >
-                  <span className="absolute -inset-1.5" />
-                  <Cart />
-                </button>
-                  </Link>
+                  <button
+                    type="button"
+                    className="relative rounded-full bg-gray-800 mt-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  >
+                    <span className="absolute -inset-1.5" />
+                    <Cart />
+                  </button>
+                </Link>
 
                 {/* Profile dropdown */}
-                {userInfo ? <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {
-                        menuItem.map(item => <Menu.Item>
-                          {({ active }) => (
-                            <Link
-                              to={item.href}
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            >
-                              {item.name}
-                            </Link>
-                          )}
-                        </Menu.Item>)
-                      }
-                      <hr className="my-2 border-blue-gray-50" />
-                      <Menu.Item>
+                {userInfo ? (
+                  <Menu as="div" className="relative ml-3">
+                    <div>
+                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">Open user menu</span>
+                        <img
+                          className="h-8 w-8 rounded-full"
+                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                          alt=""
+                        />
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        {menuItem.map((item) => (
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                to={item.href}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                {item.name}
+                              </Link>
+                            )}
+                          </Menu.Item>
+                        ))}
+                        <hr className="my-2 border-blue-gray-50" />
+                        <Menu.Item>
                           {({ active }) => (
                             <span
                               onClick={handleLogout}
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
                             >
                               Đăng xuất
                             </span>
                           )}
                         </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu> : <Link to="/signin">
-                  <span className='px-5 text-gray-100'>
-                    Đăng nhập
-                  </span>
-                  </Link>}
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                ) : (
+                  <Link to="/signin">
+                    <span className="px-5 text-gray-100">Đăng nhập</span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -157,10 +170,12 @@ export default function Header() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -170,5 +185,5 @@ export default function Header() {
         </>
       )}
     </Disclosure>
-  )
+  );
 }

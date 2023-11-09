@@ -5,7 +5,7 @@ import {
   DocumentDownloadIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { useCancelOrderDetailMutation, useDeliveringOrderDetailMutation, useGetOrderHistoryUserQuery, useGettingItemOrderDetailMutation } from "../../../api/api";
+import { useCancelOrderDetailMutation, useDeliveringOrderDetailMutation, useGetAllOrderQuery, useGetOrderHistoryUserQuery, useGettingItemOrderDetailMutation } from "../../../api/api";
 import axios from "axios";
 import { PROCESS_STATUS } from "../../../constants";
 import { convertDate } from "../../../utils/convertDate";
@@ -16,7 +16,7 @@ const OrderStatus = (status) => {
   switch (status) {
     case PROCESS_STATUS.COMPLETED.CODE:
       colorClass = "bg-blue-500";
-      text = PROCESS_STATUS.COMPLETED;
+      text = PROCESS_STATUS.COMPLETED.DISPLAY;
       break;
     case PROCESS_STATUS.DELIVERING.CODE:
       colorClass = "bg-green-500";
@@ -53,22 +53,21 @@ function ProcessOrder() {
   const [activeTab, setActiveTab] = useState(PROCESS_STATUS.COMPLETED.CODE);
   const [isDataOrder, setIsDataOrder] = useState([]);
   const [dataExports, setDataExports] = useState([]);
-  const { data: dataOrder, isSuccess } = useGetOrderHistoryUserQuery();
+  const { data: dataOrder, isSuccess } = useGetAllOrderQuery();
   const [ cancelOrder] = useCancelOrderDetailMutation()
   const [ delivering ] = useDeliveringOrderDetailMutation()
   const [ gettingItem ] = useGettingItemOrderDetailMutation()
 
-
   const handleDelivery = async (id) => {
-    await delivering({_id: id});
+    await delivering({ _id: id });
   };
 
   const handleCancel = async (id) => {
-    await cancelOrder({_id: id});
+    await cancelOrder({ _id: id });
   };
 
   const handleAccept = async (id) => {
-    await gettingItem({_id: id})
+    await gettingItem({ _id: id });
   };
 
   useEffect(() => {
@@ -80,27 +79,25 @@ function ProcessOrder() {
             "Ngày nhận": value.updateAt,
             "Tổng giá": value.fullPrice.toFixed(3),
           };
-        } else return;
+        } else return null;
       })
-      .filter((value) => value !== undefined);
+      .filter((value) => value !== null);
 
     setDataExports(dataUpdate);
   }, [dataOrder]);
+
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="flex items-center justify-between px-4 py-2 bg-white shadow-sm">
         <div className="flex items-center space-x-2">
-          {/* <MenuIcon className="w-6 h-6 text-gray-600" /> */}
           <span className="text-xl font-bold text-gray-800">Dashboard</span>
         </div>
         <div className="flex items-center space-x-2">
-          {/* <SearchIcon className="w-6 h-6 text-gray-600" /> */}
           <input
             type="text"
             placeholder="Search invoice"
             className="w-40 border-b border-gray-300 focus:outline-none focus:border-blue-500"
           />
-          {/* <ExportExcel data={dataExports} /> */}
         </div>
       </div>
       <div className="px-4 py-6">
@@ -154,7 +151,6 @@ function ProcessOrder() {
                 : "bg-gray-200 text-gray-600"
             }`}
           >
-            {/* Đang xử lý */}
             {PROCESS_STATUS.IN_PROGRESS.DISPLAY}
           </button>
           <button
@@ -165,7 +161,7 @@ function ProcessOrder() {
                 : "bg-gray-200 text-gray-600"
             }`}
           >
-            Đã Hủy
+            {PROCESS_STATUS.CANCELED.DISPLAY}
           </button>
         </div>
         <table className="mt-4 w-full bg-white shadow-sm rounded-md">
@@ -177,9 +173,7 @@ function ProcessOrder() {
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">
                 Tên khách
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                Sản phẩm
-              </th>
+             
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">
                 Ngày đặt
               </th>
@@ -197,8 +191,9 @@ function ProcessOrder() {
               dataOrder?.length > 0 &&
               [...dataOrder]
                 .filter((order) => {
-                  if (activeTab === "Tất cả") return order;
-                  if (activeTab === order.status) return order;
+                  if (activeTab === "Tất cả") return true;
+                  if (activeTab === order.status) return true;
+                  return false;
                 })?.reverse()
                 .map((order, index) => (
                   <tr
@@ -206,23 +201,19 @@ function ProcessOrder() {
                     className="border-b border-gray-300 hover:bg-gray-50"
                   >
                     <td className="px-4 py-3 text-sm font-medium text-gray-800">
-                      {isDataOrder.length - index}
+                      {dataOrder.length - index}
                     </td>
                     <td className="px-4 py-3 text-sm font-medium text-gray-800">
                       {order.full_name}
                     </td>
-                    <Link to={`/history-orders/${order._id}`}>
-                      <td className="px-4 py-3 text-sm font-medium text-blue-600 cursor-pointer">
-                        Chi tiết
-                      </td>
-                    </Link>
+                    
                     <td className="px-4 py-3 text-sm font-medium text-gray-800">
                       {convertDate(order.createAt)}
                     </td>
                     <td className="px-4 py-3 text-sm font-medium text-gray-800">
                       {order.total_price?.toFixed(3)} VND
                     </td>
-                    <td>{OrderStatus(order?.status)}</td>
+                    <td>{OrderStatus(order.status)}</td>
                     <td className="px-4 py-3 flex items-center justify-end">
                       {order?.status === PROCESS_STATUS.IN_PROGRESS.CODE && (
                         <>
@@ -235,7 +226,7 @@ function ProcessOrder() {
 
                           <button
                             onClick={() => handleCancel(order._id)}
-                            className="px-2 py-1 bg-rose-600 rounded-md text-white hover:bg-rose-500"
+                            className="px-2 py-1 bg-red-600 rounded-md text-white hover-bg-rose-500"
                           >
                             Hủy
                           </button>
@@ -251,7 +242,7 @@ function ProcessOrder() {
                           </button>
                           <button
                             onClick={() => handleCancel(order._id)}
-                            className="px-2 py-1 bg-rose-600 rounded-md text-white hover:bg-rose-500"
+                            className="px-2 py-1 bg-red-600 rounded-md text-white hover-bg-rose-500"
                           >
                             Hủy
                           </button>

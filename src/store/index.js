@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import {  authApi, cartApi, checkoutApi, orderDetailApi, productsApi } from '../api/api'
+import {  authApi, cartApi, checkoutApi, orderDetailApi, productsApi, userApi } from '../api/api'
 import { decodeUser, userSlice } from './redux/userSlice'
 export const store = configureStore({
   reducer: {
@@ -11,12 +11,13 @@ export const store = configureStore({
     [cartApi.reducerPath]: cartApi.reducer,
     [checkoutApi.reducerPath]: checkoutApi.reducer,
     [orderDetailApi.reducerPath]: orderDetailApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
     reducer: userSlice.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(productsApi.middleware, authApi.middleware, cartApi.middleware, checkoutApi.middleware, orderDetailApi.middleware),
+    getDefaultMiddleware().concat(userApi.middleware, productsApi.middleware, authApi.middleware, cartApi.middleware, checkoutApi.middleware, orderDetailApi.middleware),
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

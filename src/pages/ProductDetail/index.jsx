@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import Header from '../../components/Header/Header'
 import ThumbsGallery from '../../components/Slides/ThumbsGallery/ThumbsGallery'
@@ -8,9 +8,10 @@ import { formattedPrice } from '../../utils/formatedPrice'
 import Footer from '../../components/Footer/Footer'
 import { store } from '../../store'
 import ToastRadix from '../../components/Form/Toast'
-import "animate.css/animate.min.css";
 import { IconButton } from '@material-tailwind/react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
+import WriteComment from './Comments/WriteComment'
+import DisplayComment from './Comments/DisplayComment'
 
 const product = {
   href: '#',
@@ -27,10 +28,12 @@ function classNames(...classes) {
 export default function ProductDetail() {
   const {productId} = useParams()
   const {data: isData, isLoading, isSuccess} = useGetProductByIdQuery({idProduct: productId});
-  const {data: getCart} = useGetCartUserQuery();
+  const {data: getCart, isSuccess: isSuccesV2} = useGetCartUserQuery();
+  console.log(getCart);
   const [addToCart, {loadCart}] = useAddToCartMutation();
   const { userInfo } = store.getState().reducer
   const navigate = useNavigate()
+
 
   const [getColor, setColor] = useState("");
   const [indexAttr, setIndexAttr] = useState(0);
@@ -39,6 +42,7 @@ export default function ProductDetail() {
   const [titleToast, setTitleToast] = useState('Thêm vào giỏ hàng thành công')
   // const [selectedSize, setSelectedSize] = useState(product.sizes[0])
 
+  // console.log(isData);
 
   const handleAddToCart = async (e) => {
     e.preventDefault()
@@ -49,11 +53,16 @@ export default function ProductDetail() {
 
     const { _id: userId} = userInfo
     const {name, description, main_image} = isData
+    // console.log(userId);
 
     const { color, id, price, image, quantity} = isData.attributes[indexAttr]
+    if(!isSuccesV2) return;
+    console.log(getCart);
     const checkQuantityItem = getCart.items_cart?.some(value => {
       return value.productId === productId && +value.id === id && value.quantity + 1 > quantity
     })
+    console.log(checkQuantityItem);
+    console.log();
     if(checkQuantityItem) {
       return alert('Sản phẩm trong giỏ hàng đã vượt quá sản phẩm có sẵn')
     }
@@ -83,7 +92,9 @@ export default function ProductDetail() {
     setIndexAttr(indexColor)
   }
   
-  isData && !price && setPrice(isData.attributes.filter(val => val.quantity > 0)[0].price)
+  useEffect(() => {
+    isData && !price && setPrice(isData.attributes.filter(val => val.quantity > 0)[0].price)
+  }, [])
   
   return (<>
   <Header/>
@@ -113,7 +124,7 @@ export default function ProductDetail() {
      
 
         {/* Product info */}
-        <div className="mx-auto max-w-2xl  px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+        <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{isData.name}</h1>
           </div>
@@ -165,13 +176,13 @@ export default function ProductDetail() {
               {/* Sizes */}
   
 
-              <button
+              {/* <button
                 onClick={handleAddToCart}
                 type="submit"
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none"
                 >
                 Thêm vào giỏ hàng
-              </button>
+              </button> */}
             </form>
           </div>
 
@@ -210,6 +221,10 @@ export default function ProductDetail() {
         </div>
       </div>
     </div>}
+    <div className='mt-[-6%]'>
+    {/* <WriteComment/> */}
+    {/* {isData?.comments && <DisplayComment comments={isData.comments}/>} */}
+    </div>
     <ToastRadix title={titleToast} position='left' isOpen={isOpenToast} setOpen={setOpenToast}/>
     <Footer/>
    </>

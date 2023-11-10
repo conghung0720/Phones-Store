@@ -1,5 +1,4 @@
-import IP15 from "../../Public/oppo-reno10.jpg";
-import JFOD5 from "../../Public/samsung_galax-jfold5y.jpg";
+
 
 // Import Swiper styles
 import "swiper/css";
@@ -15,34 +14,15 @@ import { Link } from "react-router-dom";
 import HeaderSection from "./Section";
 import NewsLetter from "./Section/NewsLetter";
 
-const IMAGES_BANNER = [
-  {
-    id: 1,
-    image:
-      "https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/Sliding%20(9).png",
-  },
-  {
-    id: 2,
-    image:
-      "https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/xiaomi-redmi-12-series-sliding-th99.jpg",
-  },
-  {
-    id: 3,
-    image:
-      "https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/sliding-realme%2011-009.jpg",
-  },
-  {
-    id: 4,
-    image: IP15,
-  },
-];
 
-export default function Home() {
-  return (
-    <>
-      <Header />
-
-      <div className="relative overflow-hidden bg-white mt-7">
+export default function Home() 
+{
+    return (
+        <>
+        <Header/>
+        <BannerHead/>
+        
+      <div className="relative overflow-hidden bg-white">
         <div className="pb-80 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
           <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
             <div className="sm:max-w-lg">
@@ -126,8 +106,7 @@ export default function Home() {
 
                 <Link
                   to="/productlist"
-                  className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700"
-                >
+
                   Xem ngay
                 </Link>
               </div>
@@ -138,6 +117,4 @@ export default function Home() {
       <NewProduct />
       <NewsLetter />
       <Footer />
-    </>
-  );
-}
+

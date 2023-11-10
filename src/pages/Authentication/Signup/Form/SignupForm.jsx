@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { useRegisterMutation } from "../../../../api/api";
+import { useNewCartMutation, useRegisterMutation } from "../../../../api/api";
 import Button from "../../../../components/Button/Button"
 import Input from "../../../../components/Input/Input"
 import { redirect, useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ const SignupForm = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [register, { isloading }] = useRegisterMutation();
+  const [newCart] = useNewCartMutation()
   let navigate = useNavigate()
 
   async function onSubmit(event) {
@@ -25,12 +26,15 @@ const SignupForm = () => {
         userName,
         password,
         email,
+        role: 'User',
         active: true
-      }).then(value => {
+      }).then(async (value) => {
         if(value.data){
          localStorage.setItem("access_token", value.data.metadata.tokens.accessToken)
          localStorage.setItem("refresh_token", value.data.metadata.tokens.refreshToken)
-
+          console.log(value.data.metadata._id);
+          const {_id} = value.data.metadata;
+         await newCart({userId: _id, product: []}).then(res => console.log(res))
          navigate('/signin')
         }
         

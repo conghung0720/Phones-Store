@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
-import { RadioGroup } from '@headlessui/react'
 import Header from '../../components/Header/Header'
 import ThumbsGallery from '../../components/Slides/ThumbsGallery/ThumbsGallery'
-import { useAddToCartMutation, useGetProductByIdQuery } from '../../api/api'
+import { useAddToCartMutation, useGetCartUserQuery, useGetProductByIdQuery } from '../../api/api'
 import { useNavigate, useParams } from 'react-router-dom'
 import { formattedPrice } from '../../utils/formatedPrice'
 import Footer from '../../components/Footer/Footer'
 import { store } from '../../store'
-import { ToastContainer, toast } from 'react-toastify'
+import ToastRadix from '../../components/Form/Toast'
+import { IconButton } from '@material-tailwind/react'
+import { XMarkIcon } from '@heroicons/react/24/solid'
+import WriteComment from './Comments/WriteComment'
+import DisplayComment from './Comments/DisplayComment'
+
 const product = {
   href: '#',
   breadcrumbs: [
@@ -24,15 +28,21 @@ function classNames(...classes) {
 export default function ProductDetail() {
   const {productId} = useParams()
   const {data: isData, isLoading, isSuccess} = useGetProductByIdQuery({idProduct: productId});
+  const {data: getCart, isSuccess: isSuccesV2} = useGetCartUserQuery();
+  console.log(getCart);
   const [addToCart, {loadCart}] = useAddToCartMutation();
   const { userInfo } = store.getState().reducer
   const navigate = useNavigate()
 
+
   const [getColor, setColor] = useState("");
   const [indexAttr, setIndexAttr] = useState(0);
   const [price, setPrice] = useState("");
+  const [isOpenToast, setOpenToast] = useState(false);
+  const [titleToast, setTitleToast] = useState('Thêm vào giỏ hàng thành công')
   // const [selectedSize, setSelectedSize] = useState(product.sizes[0])
 
+  // console.log(isData);
 
   const handleAddToCart = async (e) => {
     e.preventDefault()
@@ -41,12 +51,24 @@ export default function ProductDetail() {
      
     }
 
-
     const { _id: userId} = userInfo
     const {name, description, main_image} = isData
-    const { color, id, price, image } = isData.attributes[indexAttr]
-    await addToCart({
+    // console.log(userId);
+
+    const { color, id, price, image, quantity} = isData.attributes[indexAttr]
+    if(!isSuccesV2) return;
+    console.log(getCart);
+    const checkQuantityItem = getCart.items_cart?.some(value => {
+      return value.productId === productId && +value.id === id && value.quantity + 1 > quantity
+    })
+    console.log(checkQuantityItem);
+    console.log();
+    if(checkQuantityItem) {
+      return alert('Sản phẩm trong giỏ hàng đã vượt quá sản phẩm có sẵn')
+    }
+      await addToCart({
       productId,
+      old_quantity: 1,
       userId,
       name,
       description,
@@ -57,13 +79,11 @@ export default function ProductDetail() {
       devide_storage: "128GB",
       price,
       image
+    }).then(res => {
+        console.log(res.data);
+        setOpenToast(true);
     })
 
-    toast.success("Thêm thành công!", {
-      position: "top-right",
-      autoClose: 3000,
-  
-    });
   }
 
   const handleChangeColor = (e) => {
@@ -72,7 +92,9 @@ export default function ProductDetail() {
     setIndexAttr(indexColor)
   }
   
-  isData && !price && setPrice(isData.attributes[0].price)
+  useEffect(() => {
+    isData && !price && setPrice(isData.attributes.filter(val => val.quantity > 0)[0].price)
+  }, [])
   
   return (<>
   <Header/>
@@ -102,7 +124,7 @@ export default function ProductDetail() {
      
 
         {/* Product info */}
-        <div className="mx-auto max-w-2xl  px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+        <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{isData.name}</h1>
           </div>
@@ -138,76 +160,29 @@ export default function ProductDetail() {
 
             <form className="mt-10">
               {/* Colors */}
-          
+                {isData.attributes.map((val, index) => {
+                  if(val.quantity < 0) return <IconButton className={` mr-1.5 bg-slate-100 border-2 blur-2 cursor-not-allowed`}>
+                    <XMarkIcon className='w-8 h-8 text-red-600'/>
+                  </IconButton>
+                  return <IconButton onClick={() => setIndexAttr(index)} className={`rounded- mr-1.5 ${val.class} focus:outline-2 focus:ring-2`}></IconButton>
+                })
+                }
+                {isData.attributes.map((value, index) => 
+                  indexAttr === index && <p className='mt-5'>
+                  <span className={`font-bold`}>{value.color}</span> còn {value.quantity} sản phẩm
+                </p>
+                  ) 
+                }
               {/* Sizes */}
-              <div className="mt-10">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium text-gray-900">Màu sắc</h3>
-        
-                </div>
+  
 
-                <RadioGroup className="mt-4">
-                  <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                    {isData.attributes.map((value, index) => (
-                      <RadioGroup.Option
-                      key={index}
-                      value={index}
-                      indexColor={index}
-                      onClick={handleChangeColor}
-                      disabled={value.quantity <= 0}
-                      className={({ active }) =>
-                      classNames(
-                        value.quantity
-                        ? `cursor-pointer ${value.class} text-gray-900 shadow-sm `
-                        : 'cursor-not-allowed bg-gray-50 text-gray-200',
-                        active ? 'ring-2 ring-indigo-500' : '',
-                        'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:shadow-2xl focus:outline-none sm:flex-1 sm:py-6'
-                        )
-                      }
-                      >
-                        {({ active, checked }) => (
-                          <>
-                            <RadioGroup.Label className={"h-6"} as="span">{}</RadioGroup.Label>
-                            {value.quantity ? (
-                              <span
-                              
-                              className={classNames(
-                                active ? 'border' : 'border-2',
-                                checked ? 'border-indigo-500' : 'border-transparent',
-                                'pointer-events-none absolute -inset-px rounded-md'
-                                )}
-                                aria-hidden="true"
-                                />
-                            ) : (
-                              <span
-                              aria-hidden="true"
-                              className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"
-                              >
-                                <svg
-                                  className="absolute inset-0 h-full w-full stroke-2 text-gray-200"
-                                  viewBox="0 0 100 100"
-                                  preserveAspectRatio="none"
-                                  stroke="currentColor"
-                                  >
-                                  <line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
-                                </svg>
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </RadioGroup.Option>
-                    ))}
-                  </div>
-                </RadioGroup>
-              </div>
-
-              <button
+              {/* <button
                 onClick={handleAddToCart}
                 type="submit"
-                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none"
                 >
                 Thêm vào giỏ hàng
-              </button>
+              </button> */}
             </form>
           </div>
 
@@ -246,8 +221,12 @@ export default function ProductDetail() {
         </div>
       </div>
     </div>}
+    <div className='mt-[-6%]'>
+    {/* <WriteComment/> */}
+    {/* {isData?.comments && <DisplayComment comments={isData.comments}/>} */}
+    </div>
+    <ToastRadix title={titleToast} position='left' isOpen={isOpenToast} setOpen={setOpenToast}/>
     <Footer/>
-    <ToastContainer/>
    </>
   )
 }

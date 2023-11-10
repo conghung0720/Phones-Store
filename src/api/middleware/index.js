@@ -1,10 +1,5 @@
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { store } from "../../store";
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { decodeUser, setUser } from "../../store/redux/userSlice";
-import { useEffect } from "react";
-
 
  const baseQuery = fetchBaseQuery({
     baseUrl: process.env.REACT_APP_HOST,

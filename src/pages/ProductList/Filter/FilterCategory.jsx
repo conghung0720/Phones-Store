@@ -67,7 +67,7 @@ export default function FilterCategory({children}) {
   return (
     <>
     <Header/>
-    <BannerHead/>
+    
     <div className="bg-white">
       <div>
         {/* Mobile filter dialog */}

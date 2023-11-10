@@ -67,7 +67,7 @@ export default function FilterCategory({children}) {
   return (
     <>
     <Header/>
-    <BannerHead/>
+    
     <div className="bg-white">
       <div>
         {/* Mobile filter dialog */}
@@ -292,7 +292,7 @@ export default function FilterCategory({children}) {
                     )}
                   </Disclosure>
                 ))} */}
-              </form>
+              </form>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 
               {/* Product grid */}
               <div className="lg:col-span-3">{children}</div>

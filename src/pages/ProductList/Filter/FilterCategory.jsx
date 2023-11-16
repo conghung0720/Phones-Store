@@ -102,6 +102,7 @@ export default function FilterCategory({ children }) {
               className="relative z-40 lg:hidden"
               onClose={setMobileFiltersOpen}
             >
+
               <Transition.Child
                 as={Fragment}
                 enter="transition-opacity ease-linear duration-300"
@@ -355,6 +356,7 @@ export default function FilterCategory({ children }) {
                                     className="ml-3 text-sm text-gray-600"
                                   >
 
+
                                     {option.label}
                                   </label>
                                 </div>
@@ -366,8 +368,6 @@ export default function FilterCategory({ children }) {
                     </Disclosure>
                   ))}
                 </form>
-
-
                 {/* Product grid */}
                 <div className="lg:col-span-3">{children}</div>
               </div>

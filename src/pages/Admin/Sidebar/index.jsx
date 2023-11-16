@@ -19,24 +19,33 @@ import {
   InboxIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
-import { ChevronRightIcon, ChevronDownIcon, PresentationChartLineIcon } from "@heroicons/react/24/outline";
+
+import {
+  ChevronRightIcon,
+  ChevronDownIcon,
+  PresentationChartLineIcon,
+} from "@heroicons/react/24/outline";
 import { BookmarkFilledIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
- 
+
 export default function Sidebar({ selectedMenuItem, handleMenuItemClick }) {
   const [open, setOpen] = React.useState(0);
- 
+
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
- 
+
   return (
     <Card className="h-screen bg-slate-900 text-gray-200 w-full max-w-[20rem] fixed p-4 shadow-xl shadow-blue-gray-900/5">
       <div className="mb-2 p-4">
         <Link to="/">
-        <Typography variant="h5" color="blue-gray" className="text-red-600 font-bold">
-          Admin
-        </Typography>
+          <Typography
+            variant="h5"
+            color="blue-gray"
+            className="text-red-600 font-bold"
+          >
+            Admin
+          </Typography>
         </Link>
       </div>
       <List>
@@ -45,12 +54,16 @@ export default function Sidebar({ selectedMenuItem, handleMenuItemClick }) {
           icon={
             <ChevronDownIcon
               strokeWidth={2.5}
+              className={`mx-auto h-4 w-4 transition-transform ${
+                open === 1 ? "rotate-180" : ""
+              }`}
               // className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
             />
           }
         >
           <ListItem className="p-0 " selected={open === 1}>
             {/* <AccordionHeader onClick={() => handleMenuItemClick(1)} className="border-b-0 p-3">
+>>>>>>> 0df4f5d8f80a31205258a490a316a6bb2e2401b9
               <ListItemPrefix>
                 <PresentationChartBarIcon className="h-5 w-5 mr-0" />
               </ListItemPrefix>
@@ -60,11 +73,10 @@ export default function Sidebar({ selectedMenuItem, handleMenuItemClick }) {
             </AccordionHeader> */}
           </ListItem>
         </Accordion>
-        <Accordion
-          open={open === 2}
-        >
+        <Accordion open={open === 2}>
           <ListItem className="p-0" selected={open === 2}>
             {/* <AccordionHeader onClick={() => handleMenuItemClick(2)} className="border-b-0 p-3">
+>>>>>>> 0df4f5d8f80a31205258a490a316a6bb2e2401b9
               <ListItemPrefix>
                 <ShoppingBagIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -75,7 +87,10 @@ export default function Sidebar({ selectedMenuItem, handleMenuItemClick }) {
           </ListItem>
 
           <ListItem className="p-0" selected={open === 2}>
-            <AccordionHeader onClick={() => handleMenuItemClick(3)} className="border-b-0 p-3">
+            <AccordionHeader
+              onClick={() => handleMenuItemClick(3)}
+              className="border-b-0 p-3"
+            >
               <ListItemPrefix>
                 <BookmarkFilledIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -84,7 +99,6 @@ export default function Sidebar({ selectedMenuItem, handleMenuItemClick }) {
               </Typography>
             </AccordionHeader>
           </ListItem>
-        
         </Accordion>
         <hr className="my-2 border-blue-gray-50" />
         <ListItem>
@@ -93,7 +107,13 @@ export default function Sidebar({ selectedMenuItem, handleMenuItemClick }) {
           </ListItemPrefix>
           Tin nhắn
           <ListItemSuffix>
-            <Chip value="3" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+            <Chip
+              value="3"
+              size="sm"
+              variant="ghost"
+              color="blue-gray"
+              className="rounded-full"
+            />
           </ListItemSuffix>
         </ListItem>
         <ListItem>

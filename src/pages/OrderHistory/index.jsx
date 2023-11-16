@@ -1,3 +1,4 @@
+
 import React from 'react'
 import Header from '../../components/Header/Header'
 import { EllipsisHorizontalCircleIcon } from '@heroicons/react/20/solid'
@@ -52,9 +53,10 @@ function codeToDisplayAndIcon(code) {
 
 
 
+
 const OrderHistory = () => {
-    const {userInfo} = store.getState().reducer;
-    const {data: isData, isSuccess} = useGetOrderHistoryUserQuery()
+  const { userInfo } = store.getState().reducer;
+  const { data: isData, isSuccess } = useGetOrderHistoryUserQuery();
   return (
     <>
       <Header />
@@ -139,6 +141,6 @@ const OrderHistory = () => {
       </main>
     </>
   );
-}
+};
 
-export default OrderHistory
+export default OrderHistory;

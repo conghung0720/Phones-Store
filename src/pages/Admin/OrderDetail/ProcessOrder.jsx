@@ -5,7 +5,13 @@ import {
   DocumentDownloadIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { useCancelOrderDetailMutation, useDeliveringOrderDetailMutation, useGetAllOrderQuery, useGetOrderHistoryUserQuery, useGettingItemOrderDetailMutation } from "../../../api/api";
+
+import {
+  useCancelOrderDetailMutation,
+  useDeliveringOrderDetailMutation,
+  useGetOrderHistoryUserQuery,
+  useGettingItemOrderDetailMutation,
+} from "../../../api/api";
 import axios from "axios";
 import { PROCESS_STATUS } from "../../../constants";
 import { convertDate } from "../../../utils/convertDate";
@@ -53,10 +59,11 @@ function ProcessOrder() {
   const [activeTab, setActiveTab] = useState(PROCESS_STATUS.COMPLETED.CODE);
   const [isDataOrder, setIsDataOrder] = useState([]);
   const [dataExports, setDataExports] = useState([]);
-  const { data: dataOrder, isSuccess } = useGetAllOrderQuery();
-  const [ cancelOrder] = useCancelOrderDetailMutation()
-  const [ delivering ] = useDeliveringOrderDetailMutation()
-  const [ gettingItem ] = useGettingItemOrderDetailMutation()
+
+  const { data: dataOrder, isSuccess } = useGetOrderHistoryUserQuery();
+  const [cancelOrder] = useCancelOrderDetailMutation();
+  const [delivering] = useDeliveringOrderDetailMutation();
+  const [gettingItem] = useGettingItemOrderDetailMutation();
 
   const handleDelivery = async (id) => {
     await delivering({ _id: id });
@@ -101,7 +108,9 @@ function ProcessOrder() {
         </div>
       </div>
       <div className="px-4 py-6">
-        <h1 className="text-2xl font-bold text-gray-800">Tiến trình sản phẩm</h1>
+        <h1 className="text-2xl font-bold text-gray-800">
+          Tiến trình sản phẩm
+        </h1>
         <div className="mt-4 flex items-center space-x-4">
           <button
             onClick={() => setActiveTab("Tất cả")}
@@ -173,7 +182,7 @@ function ProcessOrder() {
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">
                 Tên khách
               </th>
-             
+
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">
                 Ngày đặt
               </th>
@@ -194,7 +203,9 @@ function ProcessOrder() {
                   if (activeTab === "Tất cả") return true;
                   if (activeTab === order.status) return true;
                   return false;
-                })?.reverse()
+                })
+                ?.reverse()
+
                 .map((order, index) => (
                   <tr
                     key={order._id}
@@ -206,7 +217,7 @@ function ProcessOrder() {
                     <td className="px-4 py-3 text-sm font-medium text-gray-800">
                       {order.full_name}
                     </td>
-                    
+
                     <td className="px-4 py-3 text-sm font-medium text-gray-800">
                       {convertDate(order.createAt)}
                     </td>

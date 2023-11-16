@@ -5,7 +5,12 @@ import {
   DocumentDownloadIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { useCancelOrderDetailMutation, useDeliveringOrderDetailMutation, useGetOrderHistoryUserQuery, useGettingItemOrderDetailMutation } from "../../../api/api";
+import {
+  useCancelOrderDetailMutation,
+  useDeliveringOrderDetailMutation,
+  useGetOrderHistoryUserQuery,
+  useGettingItemOrderDetailMutation,
+} from "../../../api/api";
 import axios from "axios";
 import { PROCESS_STATUS } from "../../../constants";
 import { convertDate } from "../../../utils/convertDate";
@@ -54,21 +59,20 @@ function ProcessOrder() {
   const [isDataOrder, setIsDataOrder] = useState([]);
   const [dataExports, setDataExports] = useState([]);
   const { data: dataOrder, isSuccess } = useGetOrderHistoryUserQuery();
-  const [ cancelOrder] = useCancelOrderDetailMutation()
-  const [ delivering ] = useDeliveringOrderDetailMutation()
-  const [ gettingItem ] = useGettingItemOrderDetailMutation()
-
+  const [cancelOrder] = useCancelOrderDetailMutation();
+  const [delivering] = useDeliveringOrderDetailMutation();
+  const [gettingItem] = useGettingItemOrderDetailMutation();
 
   const handleDelivery = async (id) => {
-    await delivering({_id: id});
+    await delivering({ _id: id });
   };
 
   const handleCancel = async (id) => {
-    await cancelOrder({_id: id});
+    await cancelOrder({ _id: id });
   };
 
   const handleAccept = async (id) => {
-    await gettingItem({_id: id})
+    await gettingItem({ _id: id });
   };
 
   useEffect(() => {
@@ -104,7 +108,9 @@ function ProcessOrder() {
         </div>
       </div>
       <div className="px-4 py-6">
-        <h1 className="text-2xl font-bold text-gray-800">Tiến trình sản phẩm</h1>
+        <h1 className="text-2xl font-bold text-gray-800">
+          Tiến trình sản phẩm
+        </h1>
         <div className="mt-4 flex items-center space-x-4">
           <button
             onClick={() => setActiveTab("Tất cả")}
@@ -199,7 +205,8 @@ function ProcessOrder() {
                 .filter((order) => {
                   if (activeTab === "Tất cả") return order;
                   if (activeTab === order.status) return order;
-                })?.reverse()
+                })
+                ?.reverse()
                 .map((order, index) => (
                   <tr
                     key={order._id}

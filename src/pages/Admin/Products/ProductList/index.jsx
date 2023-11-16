@@ -96,7 +96,7 @@ const ProductList = () => {
                 </td>
                 <td className="px-6 py-4">{formatProductName(product.name)}</td>
                 <td className="px-6 py-4">{product.brand}</td>
-                <td className="px-6 py-4">{formatPrice(product.price)}</td>
+                <td className="px-6 py-4">{formatPrice(product.attributes?.at(0).price)}</td>
                 <td className="px-6 py-4 font-bold">{product.attributes?.map(value => value.quantity).reduce((preVal, currentVal) => currentVal + preVal)}</td>
                 <td className="px-6 py-4 font-bold">{product.quantity_sold}</td>
                 <td className="px-6 py-4">

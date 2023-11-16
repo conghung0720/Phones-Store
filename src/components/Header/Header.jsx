@@ -9,6 +9,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { store } from "../../store";
 import { isExpired, decodeToken } from "react-jwt";
+
 import { logout, setUser } from "../../store/redux/userSlice";
 import Cart from "../Icons/Cart";
 
@@ -25,13 +26,36 @@ const menuItem = [
   { name: "Admin", href: "/admin" },
 ];
 
+import { logout, setUser } from '../../store/redux/userSlice'
+import Cart from '../Icons/Cart'
+import { useGetProfileQuery } from '../../api/api'
+
+
+const navigation = [
+  { name: 'Trang chủ', href: '/', current: false },
+  { name: 'Danh sách sản phẩm', href: '/productlist', current: false },
+  { name: 'Thông tin', href: '/about', current: false },
+  { name: 'Giới thiệu', href: '#', current: false },
+]
+
+const menuItem = [
+  // { name: 'Xem trang cá nhân', href: '/profile'},
+  // { name: 'Lịch sử đặt hàng', href: '/orderhistory'},
+  { name: 'Admin', href: '/admin'},
+]
+
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Header() {
-  const { userInfo } = store.getState().reducer;
-  const navigate = useNavigate();
+
+  const {userInfo} = store.getState().reducer;
+  const {data: isData, isSuccess} = useGetProfileQuery()
+  const navigate = useNavigate()
+  
+
 
   // fix UI
 
@@ -41,14 +65,14 @@ export default function Header() {
   };
 
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-slate12">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-500 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
@@ -88,56 +112,46 @@ export default function Header() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Link to="/cart">
-                  <button
-                    type="button"
-                    className="relative rounded-full bg-gray-800 mt-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <Cart />
-                  </button>
+                  <ShoppingCartIcon className='w-6 h-6 text-white mr-5' />
                 </Link>
 
                 {/* Profile dropdown */}
-                {userInfo ? (
-                  <Menu as="div" className="relative ml-3">
-                    <div>
-                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
-                      </Menu.Button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {menuItem.map((item) => (
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to={item.href}
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
-                                )}
-                              >
-                                {item.name}
-                              </Link>
-                            )}
-                          </Menu.Item>
-                        ))}
-                        <hr className="my-2 border-blue-gray-50" />
-                        <Menu.Item>
+                {isSuccess ? <Menu as="div" className="relative ml-3">
+                  <div>
+                    <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <span className="absolute -inset-1.5" />
+                      <span className="sr-only">Open user menu</span>
+                      <img
+                        className="h-8 w-8 rounded-full"
+                        src={isData.avatar}            
+                        alt=""
+                      />
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      {
+                        menuItem.map(item => <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={item.href}
+                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            >
+                              {item.name}
+                            </Link>
+                          )}
+                        </Menu.Item>)
+                      }
+                      <hr className="my-2 border-blue-gray-50" />
+                      <Menu.Item>
                           {({ active }) => (
                             <span
                               onClick={handleLogout}

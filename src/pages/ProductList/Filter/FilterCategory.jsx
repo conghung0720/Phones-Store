@@ -19,6 +19,7 @@ const sortOptions = [
   { name: "Giá cao xuống thấp", href: "#", current: false },
 ];
 const subCategories = [
+
   { name: "Samsung", href: "#" },
   { name: "Apple", href: "#" },
   { name: "Huawei", href: "#" },
@@ -49,19 +50,37 @@ const filters = [
       { value: "564GB", label: "564GB", checked: false },
     ],
   },
-  // {
-  //   id: 'size',
-  //   name: 'Size',
-  //   options: [
-  //     { value: '2l', label: '2L', checked: false },
-  //     { value: '6l', label: '6L', checked: false },
-  //     { value: '12l', label: '12L', checked: false },
-  //     { value: '18l', label: '18L', checked: false },
-  //     { value: '20l', label: '20L', checked: false },
-  //     { value: '40l', label: '40L', checked: true },
-  //   ],
-  // },
-];
+  { name: 'Samsung', href: '#' },
+  { name: 'Apple', href: '#' },
+  { name: 'Huawei', href: '#' },
+  { name: 'Google Pixel', href: '#' },
+  { name: 'Oppo', href: '#' },
+]
+// const filters = [
+//   {
+//     id: 'color',
+//     name: 'Màu sắc',
+//     options: [
+//       { value: 'white', label: 'Màu trắng', checked: false },
+//       { value: 'beige', label: 'Màu be', checked: false },
+//       { value: 'blue', label: 'Màu xanh', checked: true },
+//       { value: 'brown', label: 'Màu nâu', checked: false },
+//       { value: 'green', label: 'Màu xanh lá', checked: false },
+//       { value: 'purple', label: 'Màu tím', checked: false },
+//     ],
+//   },
+//   {
+//     id: 'category',
+//     name: 'Bộ nhớ',
+//     options: [
+//       { value: '32GB', label: '32GB', checked: false },
+//       { value: '64GB', label: '64GB', checked: false },
+//       { value: '128GB', label: '128GB', checked: true },
+//       { value: '284GB', label: '284GB', checked: false },
+//       { value: '564GB', label: '564GB', checked: false },
+//     ],
+//   },
+//]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -217,7 +236,6 @@ export default function FilterCategory({ children }) {
                       />
                     </Menu.Button>
                   </div>
-
                   <Transition
                     as={Fragment}
                     enter="transition ease-out duration-100"
@@ -268,7 +286,7 @@ export default function FilterCategory({ children }) {
                   <FunnelIcon className="h-5 w-5" aria-hidden="true" />
                 </button>
               </div>
-            </div>
+
 
             <section aria-labelledby="products-heading" className="pb-24 pt-6">
               <h2 id="products-heading" className="sr-only">
@@ -289,7 +307,6 @@ export default function FilterCategory({ children }) {
                       </li>
                     ))}
                   </ul>
-
                   {filters.map((section) => (
                     <Disclosure
                       as="div"
@@ -337,6 +354,7 @@ export default function FilterCategory({ children }) {
                                     htmlFor={`filter-${section.id}-${optionIdx}`}
                                     className="ml-3 text-sm text-gray-600"
                                   >
+
                                     {option.label}
                                   </label>
                                 </div>
@@ -348,6 +366,7 @@ export default function FilterCategory({ children }) {
                     </Disclosure>
                   ))}
                 </form>
+
 
                 {/* Product grid */}
                 <div className="lg:col-span-3">{children}</div>

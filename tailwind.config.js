@@ -1,7 +1,11 @@
-const { blackA, green, mauve, slate, violet } = require('@radix-ui/colors');
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+const { blackA, green, mauve, slate, violet } = require('@radix-ui/colors');
+import('tailwindcss').Config
+const withMT = require("@material-tailwind/react/utils/withMT");
+
+
+// /** @type {import('tailwindcss').Config} */
+module.exports = withMT({
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -36,5 +40,8 @@ module.exports = {
       },
     },
   },
+
   plugins: [require('@tailwindcss/aspect-ratio'),require('@tailwindcss/forms'), require('tailwind-scrollbar'),],
-};
+});
+
+

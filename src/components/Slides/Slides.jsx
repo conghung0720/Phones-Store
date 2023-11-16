@@ -25,6 +25,7 @@ const Slides = ({ DATA }) => {
         onSwiper={(swiper) => console.log(swiper)}
         onSlideChange={() => console.log("slide change")}
       >
+
         {DATA.map((value) => (
           <SwiperSlide>
             <img className="w-full h-[24em] object-center" src={value.image} />

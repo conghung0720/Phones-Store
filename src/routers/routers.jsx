@@ -9,6 +9,10 @@ import OrderHistory from "../pages/OrderHistory";
 import ProductList from "../pages/ProductList";
 import Checkout from "../pages/Checkout";
 import Cart from "../pages/Cart/Cart";
+import Details from "../pages/Detailorders";
+import Admin from "../pages/Admin";
+import OrderDetail from "../pages/OrderHistory/OrderDetail";
+import AboutPage from "../pages/About/AboutPage";
 
 const routers = createBrowserRouter([
   {
@@ -46,6 +50,18 @@ const routers = createBrowserRouter([
   {
     path: "/checkout",
     element: <Checkout/>
+  },
+   {
+    path: "/admin/",
+    element: <Admin/>
+  },
+  {
+    path: '/orderDetail/:orderId',
+    element: <OrderDetail/>
+  },
+  {
+    path: '/about',
+    element: <AboutPage/>
   }
 ]);
 

@@ -6,62 +6,66 @@ import { store } from '../../store';
 import { ToastContainer, toast } from 'react-toastify';
 
 
-const CartItems = ({name, color, price, image, quantity, loadingCartItem, productId, attrId}) => {
+const CartItems = ({name, color, price, image, quantity, loadingCartItem, productId, attrId, key}) => {
   const [updateItem, result] = useUpdateItemMutation()
   const [findSubProduct, {loading}] = useGetProductSubByIdMutation()
   const {userInfo} = store.getState().reducer;
-  
+
+
 
   // console.log(quantity);
   const [priceItem, setPriceItem] = useState("");
 
   const handleChangeValue = (e) => {
-      console.log(e.target);
-
-      
+      // console.log(e.target);
   }
+
 
   const handleSubtract = async () => {
     const {_id: userId} = userInfo;
-    const foundSubProduct = await findSubProduct({
+    const {data} = await findSubProduct({
       productId,
       attrId,
     })
+
+
+
     await updateItem({
       productId,
       userId,
       id: attrId,
       quantity: -1,
-      price: -foundSubProduct.data.price,
+      price: -data.price,
       old_quantity: +quantity
-    }).then(value => {
-      loadingCartItem(value.data)
-      
     })
   }
   
-  const handlePlus = async (e) => {
+  const handlePlus = async () => {
     const {_id: userId} = userInfo;
-    const foundSubProduct = await findSubProduct({
+    const {data} = await findSubProduct({
       productId,
       attrId,
     })
+
+    if(data.quantity <= quantity) return alert(`Vượt quá hàng tồn kho`)
+
+      
+
+
     await updateItem({
       productId,
       userId,
       id: attrId,
       quantity: +1,
-      price: foundSubProduct.data.price,
+      price: data.price,
       old_quantity: +quantity
-    }).then(value => loadingCartItem(value.data))
+    })
   }
-
-
-
+  
   return (
       <>
     <ul>
-    <li className=" h-[20em] py-7 flex border-y-[1.5px]">
+    <li key={key} className=" h-[20em] py-7 flex border-y-[1.5px]">
       <img className="h-full w-[15em] object-cover" src={image}/>
       <div className="w-full flex px-3 ">
         <div className="w-[50%] h-full space-y-1.5 relative">
